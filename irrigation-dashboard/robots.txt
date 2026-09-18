@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+# Block internal export and demo helper files from indexing
+Disallow: /*.json$
+
+Sitemap: https://aquafarm.example.com/sitemap.xml

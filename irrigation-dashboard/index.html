@@ -1,0 +1,1265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>AquaFarm | Smart Irrigation Management Dashboard</title>
+
+  <!-- ============================= SEO / METADATA ============================= -->
+  <meta name="description" content="AquaFarm is a smart irrigation management dashboard for monitoring soil moisture, temperature, humidity, water tank level and pump status, analysing water usage and scheduling irrigation from simulated field sensor data.">
+  <meta name="keywords" content="smart irrigation, irrigation management dashboard, soil moisture monitoring, water usage analytics, irrigation scheduling, precision agriculture, farm monitoring">
+  <meta name="author" content="AquaFarm">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#0F4C3A">
+  <meta name="color-scheme" content="light">
+  <link rel="canonical" href="https://aquafarm.example.com/">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="AquaFarm">
+  <meta property="og:title" content="AquaFarm | Smart Irrigation Management Dashboard">
+  <meta property="og:description" content="Monitor soil moisture, control the irrigation pump, analyse water usage and schedule irrigation from one responsive dashboard.">
+  <meta property="og:url" content="https://aquafarm.example.com/">
+  <meta property="og:image" content="https://aquafarm.example.com/assets/images/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="AquaFarm smart irrigation management dashboard preview">
+  <meta property="og:locale" content="en_IN">
+
+  <!-- Twitter / X -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="AquaFarm | Smart Irrigation Management Dashboard">
+  <meta name="twitter:description" content="Monitor, analyse, recommend, control and save water with simulation-based irrigation monitoring.">
+  <meta name="twitter:image" content="https://aquafarm.example.com/assets/images/og-image.jpg">
+
+  <!-- Icons & PWA manifest -->
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="apple-touch-icon" href="assets/images/apple-touch-icon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+
+  <!-- ============================= STYLES ============================= -->
+  <link rel="preload" as="image" href="assets/images/hero-field.jpg">
+  <link rel="stylesheet" href="assets/vendor/bootstrap/bootstrap.min.css">
+  <link rel="stylesheet" href="assets/css/icons.css">
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Structured data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "AquaFarm Smart Irrigation Management Dashboard",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web browser",
+    "description": "Dashboard for monitoring simulated field sensor data, controlling an irrigation pump, analysing water usage and scheduling irrigation.",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "INR" },
+    "featureList": [
+      "Soil moisture, temperature and humidity monitoring",
+      "Water tank level monitoring",
+      "Irrigation pump control",
+      "Water usage analytics",
+      "Irrigation scheduling",
+      "Alerts and notifications"
+    ]
+  }
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#overview">Skip to dashboard content</a>
+
+  <!-- ============================= HEADER / NAVIGATION ============================= -->
+  <header class="app-header" id="appHeader">
+    <div class="app-header__inner">
+      <a class="brand" href="#overview" aria-label="AquaFarm home">
+        <span class="brand__mark" aria-hidden="true">
+          <svg viewBox="0 0 40 40" width="40" height="40" role="img" aria-hidden="true" focusable="false">
+            <rect x="1" y="1" width="38" height="38" rx="11" fill="#0F4C3A"></rect>
+            <path d="M20 8c4.2 5.1 6.3 8.6 6.3 11.6A6.3 6.3 0 0 1 20 26a6.3 6.3 0 0 1-6.3-6.4C13.7 16.6 15.8 13.1 20 8z" fill="#8DE0AC"></path>
+            <path d="M13 29.5c2.1-2.4 6.4-3.2 10.1-1.4 1.9.9 3.4.6 4.4-.4-.6 3-3.3 4.6-6.6 4a9.6 9.6 0 0 0-7.9 1.2c-.3-1.4-.3-2.5 0-3.4z" fill="#2E8B62"></path>
+          </svg>
+        </span>
+        <span class="brand__text">
+          <span class="brand__name">AquaFarm</span>
+          <span class="brand__subtitle">Smart Irrigation Management</span>
+        </span>
+      </a>
+
+      <nav class="main-nav" id="mainNav" aria-label="Dashboard sections">
+        <ul class="main-nav__list" role="list">
+          <li><a class="main-nav__link is-active" href="#overview" data-nav="overview"><i class="fa-solid fa-gauge-high" aria-hidden="true"></i><span>Dashboard</span></a></li>
+          <li><a class="main-nav__link" href="#fields" data-nav="fields"><i class="fa-solid fa-map" aria-hidden="true"></i><span>Fields</span></a></li>
+          <li><a class="main-nav__link" href="#irrigation-control" data-nav="irrigation-control"><i class="fa-solid fa-faucet-drip" aria-hidden="true"></i><span>Irrigation</span></a></li>
+          <li><a class="main-nav__link" href="#analytics" data-nav="analytics"><i class="fa-solid fa-chart-line" aria-hidden="true"></i><span>Analytics</span></a></li>
+          <li><a class="main-nav__link" href="#alerts" data-nav="alerts"><i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i><span>Alerts</span><span class="nav-badge" id="navAlertBadge" hidden>0</span></a></li>
+          <li><a class="main-nav__link" href="#settings" data-nav="settings"><i class="fa-solid fa-gear" aria-hidden="true"></i><span>Settings</span></a></li>
+        </ul>
+      </nav>
+
+      <div class="app-header__actions">
+        <div class="dropdown">
+          <button class="icon-btn" type="button" id="notificationBell" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false" aria-label="Notifications" title="Notifications">
+            <i class="fa-regular fa-bell" aria-hidden="true"></i>
+            <span class="icon-btn__dot" id="bellDot" hidden></span>
+            <span class="icon-btn__count" id="bellCount" hidden>0</span>
+          </button>
+          <div class="dropdown-menu dropdown-menu-end panel-dropdown" aria-labelledby="notificationBell">
+            <div class="panel-dropdown__head">
+              <span class="panel-dropdown__title">Notifications</span>
+              <button type="button" class="link-btn" id="markAllReadBtn">Mark all as read</button>
+            </div>
+            <div class="panel-dropdown__body" id="bellList"></div>
+            <div class="panel-dropdown__foot">
+              <a href="#alerts" class="link-btn">Open alert centre</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="profile" id="userProfile" data-bs-toggle="dropdown" role="button" tabindex="0" aria-haspopup="true" aria-expanded="false" aria-label="User menu for Ravi Kumar">
+          <span class="profile__avatar" aria-hidden="true">RK</span>
+          <span class="profile__meta">
+            <span class="profile__name">Ravi Kumar</span>
+            <span class="profile__role">Farm Manager</span>
+          </span>
+          <i class="fa-solid fa-chevron-down profile__caret" aria-hidden="true"></i>
+        </div>
+        <ul class="dropdown-menu dropdown-menu-end panel-dropdown profile-menu" aria-labelledby="userProfile">
+          <li><span class="dropdown-header">Signed in as <strong>Ravi Kumar</strong></span></li>
+          <li><a class="dropdown-item" href="#settings"><i class="fa-solid fa-sliders" aria-hidden="true"></i> Irrigation settings</a></li>
+          <li><a class="dropdown-item" href="#analytics"><i class="fa-solid fa-chart-line" aria-hidden="true"></i> Water usage analytics</a></li>
+          <li><a class="dropdown-item" href="#alerts"><i class="fa-solid fa-bell" aria-hidden="true"></i> Alerts &amp; notifications</a></li>
+          <li><hr class="dropdown-divider"></li>
+          <li><button class="dropdown-item" type="button" id="exportDataBtn"><i class="fa-solid fa-file-arrow-down" aria-hidden="true"></i> Export demo data (JSON)</button></li>
+          <li><button class="dropdown-item" type="button" id="resetDemoBtn"><i class="fa-solid fa-rotate-left" aria-hidden="true"></i> Reset dashboard data</button></li>
+        </ul>
+
+        <button class="hamburger" type="button" id="navToggle" aria-expanded="false" aria-controls="mainNav" aria-label="Open navigation menu">
+          <span class="hamburger__bar" aria-hidden="true"></span>
+          <span class="hamburger__bar" aria-hidden="true"></span>
+          <span class="hamburger__bar" aria-hidden="true"></span>
+        </button>
+      </div>
+    </div>
+    <div class="header-progress" id="headerProgress" hidden></div>
+  </header>
+
+  <div class="nav-backdrop" id="navBackdrop" hidden></div>
+
+  <main id="main">
+
+    <!-- ============================= DASHBOARD HOME ============================= -->
+    <section class="section section--hero" id="overview" aria-labelledby="overviewHeading">
+      <div class="container-fluid app-container">
+        <div class="hero">
+          <div class="hero__media">
+            <img src="assets/images/hero-field.jpg" width="1920" height="1080"
+                 alt="Irrigated crop rows on a green farm field under an open sky" fetchpriority="high" decoding="async">
+          </div>
+          <div class="hero__body">
+            <div class="hero__top">
+              <span class="pill pill--live" id="livePill">
+                <span class="dot dot--pulse" aria-hidden="true"></span>
+                <span id="livePillText">Live Sensor Simulation</span>
+              </span>
+              <span class="pill pill--ghost"><i class="fa-solid fa-tower-broadcast" aria-hidden="true"></i> Demonstration data</span>
+            </div>
+            <h1 class="hero__title" id="overviewHeading"><span id="greetingText">Good Morning</span>, Ravi</h1>
+            <p class="hero__subtitle">Here&rsquo;s the current status of your farm.</p>
+            <div class="hero__meta">
+              <p class="hero__updated">
+                <i class="fa-regular fa-clock" aria-hidden="true"></i>
+                Last updated: <strong id="lastUpdated">Just now</strong>
+                <span class="hero__separator" aria-hidden="true">&middot;</span>
+                <span id="sensorSourceLabel">Sensor node AF-01 (simulated)</span>
+              </p>
+              <div class="hero__actions">
+                <button class="btn btn--primary" type="button" id="refreshDataBtn">
+                  <i class="fa-solid fa-arrows-rotate" aria-hidden="true"></i>
+                  <span>Refresh Data</span>
+                </button>
+                <button class="btn btn--ghost" type="button" id="quickPumpBtn">
+                  <i class="fa-solid fa-power-off" aria-hidden="true"></i>
+                  <span id="quickPumpText">Turn Irrigation ON</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Farm overview KPI cards -->
+        <h2 class="section-heading" id="farmOverviewHeading">Farm Overview</h2>
+        <div class="row g-3 g-lg-4" id="farmOverview" role="group" aria-labelledby="farmOverviewHeading">
+          <div class="col-12 col-sm-6 col-xl-3">
+            <article class="card kpi-card" data-kpi="soil" aria-labelledby="kpiSoilLabel">
+              <div class="kpi-card__head">
+                <span class="kpi-card__icon kpi-card__icon--moisture" aria-hidden="true"><i class="fa-solid fa-droplet"></i></span>
+                <span class="status-tag" data-status="soil"><span class="status-tag__dot" aria-hidden="true"></span><span class="status-tag__text">Optimal</span></span>
+              </div>
+              <h3 class="kpi-card__label" id="kpiSoilLabel">Soil Moisture</h3>
+              <p class="kpi-card__value"><span data-bind="soilMoisture">--</span><span class="kpi-card__unit">%</span></p>
+              <div class="progress-track" role="progressbar" aria-label="Soil moisture level" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" data-progress="soil">
+                <span class="progress-track__fill progress-track__fill--moisture" style="width:0%"></span>
+              </div>
+              <p class="kpi-card__foot"><span class="kpi-card__hint" data-hint="soil">Target band 40&ndash;60%</span></p>
+            </article>
+          </div>
+
+          <div class="col-12 col-sm-6 col-xl-3">
+            <article class="card kpi-card" data-kpi="temp" aria-labelledby="kpiTempLabel">
+              <div class="kpi-card__head">
+                <span class="kpi-card__icon kpi-card__icon--temp" aria-hidden="true"><i class="fa-solid fa-temperature-half"></i></span>
+                <span class="status-tag" data-status="temp"><span class="status-tag__dot" aria-hidden="true"></span><span class="status-tag__text">Normal</span></span>
+              </div>
+              <h3 class="kpi-card__label" id="kpiTempLabel">Temperature</h3>
+              <p class="kpi-card__value"><span data-bind="temperature">--</span><span class="kpi-card__unit" data-unit="temp">&deg;C</span></p>
+              <div class="progress-track" role="progressbar" aria-label="Temperature level" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" data-progress="temp">
+                <span class="progress-track__fill progress-track__fill--temp" style="width:0%"></span>
+              </div>
+              <p class="kpi-card__foot"><span class="kpi-card__hint" data-hint="temp">Comfortable range 18&ndash;34 C</span></p>
+            </article>
+          </div>
+
+          <div class="col-12 col-sm-6 col-xl-3">
+            <article class="card kpi-card" data-kpi="humidity" aria-labelledby="kpiHumidityLabel">
+              <div class="kpi-card__head">
+                <span class="kpi-card__icon kpi-card__icon--humidity" aria-hidden="true"><i class="fa-solid fa-water"></i></span>
+                <span class="status-tag" data-status="humidity"><span class="status-tag__dot" aria-hidden="true"></span><span class="status-tag__text">Good</span></span>
+              </div>
+              <h3 class="kpi-card__label" id="kpiHumidityLabel">Humidity</h3>
+              <p class="kpi-card__value"><span data-bind="humidity">--</span><span class="kpi-card__unit">%</span></p>
+              <div class="progress-track" role="progressbar" aria-label="Humidity level" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" data-progress="humidity">
+                <span class="progress-track__fill progress-track__fill--humidity" style="width:0%"></span>
+              </div>
+              <p class="kpi-card__foot"><span class="kpi-card__hint" data-hint="humidity">Optimal range 45&ndash;75%</span></p>
+            </article>
+          </div>
+
+          <div class="col-12 col-sm-6 col-xl-3">
+            <article class="card kpi-card" data-kpi="tank" aria-labelledby="kpiTankLabel">
+              <div class="kpi-card__head">
+                <span class="kpi-card__icon kpi-card__icon--tank" aria-hidden="true"><i class="fa-solid fa-glass-water"></i></span>
+                <span class="status-tag" data-status="tank"><span class="status-tag__dot" aria-hidden="true"></span><span class="status-tag__text">Sufficient</span></span>
+              </div>
+              <h3 class="kpi-card__label" id="kpiTankLabel">Water Tank</h3>
+              <p class="kpi-card__value"><span data-bind="tankPercent">--</span><span class="kpi-card__unit">%</span></p>
+              <div class="progress-track progress-track--tank" role="progressbar" aria-label="Water tank level" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" data-progress="tank">
+                <span class="progress-track__fill progress-track__fill--tank" style="width:0%"></span>
+              </div>
+              <p class="kpi-card__foot"><span class="kpi-card__hint" data-hint="tank">3,800 / 5,000 L available</span></p>
+            </article>
+          </div>
+        </div>
+
+        <!-- Farm statistics -->
+        <h2 class="section-heading" id="statisticsHeading">Farm Statistics</h2>
+        <div class="row g-3 g-lg-4 stat-row" role="group" aria-labelledby="statisticsHeading">
+          <div class="col-6 col-lg-3">
+            <article class="card stat-card">
+              <span class="stat-card__icon" aria-hidden="true"><i class="fa-solid fa-vector-square"></i></span>
+              <p class="stat-card__value"><span data-bind="totalArea">7</span> <span class="stat-card__unit">Acres</span></p>
+              <p class="stat-card__label">Total Farm Area</p>
+            </article>
+          </div>
+          <div class="col-6 col-lg-3">
+            <article class="card stat-card">
+              <span class="stat-card__icon" aria-hidden="true"><i class="fa-solid fa-droplet"></i></span>
+              <p class="stat-card__value"><span data-bind="waterUsedToday">--</span> <span class="stat-card__unit" data-unit="volume">L</span></p>
+              <p class="stat-card__label">Water Used Today</p>
+            </article>
+          </div>
+          <div class="col-6 col-lg-3">
+            <article class="card stat-card">
+              <span class="stat-card__icon" aria-hidden="true"><i class="fa-solid fa-clock-rotate-left"></i></span>
+              <p class="stat-card__value"><span data-bind="sessionsToday">6</span> <span class="stat-card__unit">Sessions</span></p>
+              <p class="stat-card__label">Irrigation Sessions</p>
+            </article>
+          </div>
+          <div class="col-6 col-lg-3">
+            <article class="card stat-card">
+              <span class="stat-card__icon" aria-hidden="true"><i class="fa-solid fa-leaf"></i></span>
+              <p class="stat-card__value"><span data-bind="waterSaved">18</span><span class="stat-card__unit">%</span></p>
+              <p class="stat-card__label">Water Saved</p>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================= IRRIGATION CONTROL ============================= -->
+    <section class="section" id="irrigation-control" aria-labelledby="irrigationControlHeading">
+      <div class="container-fluid app-container">
+        <h2 class="section-heading" id="irrigationControlHeading">Irrigation Control</h2>
+
+        <div class="row g-3 g-lg-4">
+          <div class="col-12 col-xl-7">
+            <article class="card control-card">
+              <div class="control-card__head">
+                <div>
+                  <h3 class="card-title">Irrigation Pump</h3>
+                  <p class="card-subtitle">Primary pump for the selected field</p>
+                </div>
+                <span class="status-tag status-tag--lg" id="pumpStatusTag" data-status="pump">
+                  <span class="status-tag__dot" aria-hidden="true"></span>
+                  <span class="status-tag__text" id="pumpStatusText">OFF</span>
+                </span>
+              </div>
+
+              <div class="control-card__body">
+                <div class="control-target">
+                  <label class="form-label" for="pumpFieldSelect">Irrigation target field</label>
+                  <select class="form-select" id="pumpFieldSelect" aria-describedby="pumpFieldHelp"></select>
+                  <p class="form-text" id="pumpFieldHelp">The selected field receives water while the pump is running.</p>
+                </div>
+
+                <div class="pump-switch-wrap">
+                  <button class="pump-switch" type="button" id="pumpToggle" role="switch" aria-checked="false" aria-labelledby="pumpToggleLabel">
+                    <span class="pump-switch__track" aria-hidden="true"><span class="pump-switch__thumb"></span></span>
+                    <span class="pump-switch__label" id="pumpToggleLabel">Turn Irrigation ON</span>
+                  </button>
+                  <p class="pump-switch__status" id="pumpRuntimeInfo">Pump is idle. No water is being drawn.</p>
+                </div>
+
+                <div class="control-grid">
+                  <div class="control-grid__item">
+                    <span class="control-grid__label">Irrigation Mode</span>
+                    <div class="segmented" role="group" aria-label="Irrigation mode">
+                      <button type="button" class="segmented__btn is-active" data-mode="Manual" aria-pressed="true">Manual</button>
+                      <button type="button" class="segmented__btn" data-mode="Automatic" aria-pressed="false">Automatic</button>
+                      <button type="button" class="segmented__btn" data-mode="Scheduled" aria-pressed="false">Scheduled</button>
+                    </div>
+                    <p class="form-text" id="modeHelp">Manual mode only runs the pump when you start it.</p>
+                  </div>
+
+                  <div class="control-grid__item">
+                    <span class="control-grid__label">Flow Rate</span>
+                    <div class="metric-inline">
+                      <span class="metric-inline__value" id="flowRate">0</span>
+                      <span class="metric-inline__unit"><span data-unit="flow">L/min</span></span>
+                    </div>
+                    <p class="form-text">Simulated flow while the pump is running (30 L/min).</p>
+                  </div>
+
+                  <div class="control-grid__item">
+                    <span class="control-grid__label">Water Used This Session</span>
+                    <div class="metric-inline">
+                      <span class="metric-inline__value" id="sessionWater">0</span>
+                      <span class="metric-inline__unit" data-unit="volume">L</span>
+                    </div>
+                    <p class="form-text" id="sessionStartText">No active session.</p>
+                  </div>
+
+                  <div class="control-grid__item">
+                    <span class="control-grid__label">Rule Engine</span>
+                    <p class="rule-line" id="ruleStatusLine">Soil moisture is above the configured threshold.</p>
+                    <p class="form-text">Threshold: <strong id="ruleThresholdText">30%</strong> &middot; <a href="#settings" class="link-inline">Change in Settings</a></p>
+                  </div>
+                </div>
+              </div>
+              <div class="card-media card-media--inline">
+                <img src="assets/images/pump-control.jpg" width="1200" height="675" loading="lazy" decoding="async"
+                     alt="Farm operator checking an irrigation pump control unit in a field">
+              </div>
+            </article>
+          </div>
+
+          <div class="col-12 col-xl-5">
+            <div class="stack">
+              <!-- Smart recommendation -->
+              <article class="card recommendation" id="recommendationCard" aria-labelledby="recommendationHeading">
+                <div class="recommendation__head">
+                  <span class="recommendation__icon" aria-hidden="true"><i class="fa-solid fa-lightbulb"></i></span>
+                  <div>
+                    <h3 class="card-title" id="recommendationHeading">Smart Irrigation Recommendation</h3>
+                    <p class="card-subtitle">Rule-based guidance from simulated sensor readings</p>
+                  </div>
+                </div>
+                <div class="recommendation__body" id="recommendationBody">
+                  <p class="recommendation__headline" id="recommendationHeadline">Irrigation recommended</p>
+                  <p class="recommendation__text" id="recommendationText">
+                    Current soil moisture is 42%. Based on the selected crop and field conditions, irrigation may be required soon.
+                  </p>
+                  <div class="recommendation__metrics">
+                    <div>
+                      <span class="recommendation__label">Recommended duration</span>
+                      <span class="recommendation__value"><span id="recDuration">18</span> minutes</span>
+                    </div>
+                    <div>
+                      <span class="recommendation__label">Estimated water usage</span>
+                      <span class="recommendation__value"><span id="recWater">320</span> <span data-unit="volume">L</span></span>
+                    </div>
+                  </div>
+                  <div class="recommendation__actions" id="recommendationActions">
+                    <button class="btn btn--primary" type="button" id="startIrrigationBtn">
+                      <i class="fa-solid fa-play" aria-hidden="true"></i><span>Start Irrigation</span>
+                    </button>
+                    <button class="btn btn--ghost" type="button" id="ignoreRecommendationBtn">
+                      <i class="fa-solid fa-xmark" aria-hidden="true"></i><span>Ignore</span>
+                    </button>
+                  </div>
+                  <p class="recommendation__disclaimer">
+                    Demonstration recommendation based on simulated sensor data. It is not a real agronomic or AI prediction and must not be used for actual irrigation decisions.
+                  </p>
+                </div>
+              </article>
+
+              <!-- Water tank -->
+              <article class="card tank-card" aria-labelledby="tankHeading">
+                <div class="tank-card__head">
+                  <h3 class="card-title" id="tankHeading">Water Tank</h3>
+                  <span class="status-tag" data-status="tank"><span class="status-tag__dot" aria-hidden="true"></span><span class="status-tag__text">Sufficient</span></span>
+                </div>
+                <div class="tank">
+                  <div class="tank__visual" role="img" aria-labelledby="tankAriaLabel">
+                    <div class="tank__gauge">
+                      <div class="tank__body">
+                        <div class="tank__water" id="tankWater"></div>
+                        <div class="tank__ticks" aria-hidden="true">
+                          <span class="tank__tick" style="bottom:25%"><span>25</span></span>
+                          <span class="tank__tick" style="bottom:50%"><span>50</span></span>
+                          <span class="tank__tick" style="bottom:75%"><span>75</span></span>
+                        </div>
+                      </div>
+                      <span class="tank__base" aria-hidden="true"></span>
+                    </div>
+                    <p class="sr-only" id="tankAriaLabel">Water tank filled to 76 percent.</p>
+                  </div>
+                  <div class="tank__readout">
+                    <p class="tank__percent"><span data-bind="tankPercent">--</span><span class="tank__percent-sign">%</span></p>
+                    <p class="tank__volume"><span data-bind="tankVolume">3,800</span> / <span data-bind="tankCapacity">5,000</span> <span data-unit="volume">L</span></p>
+                    <dl class="tank__facts">
+                      <div><dt>Tank capacity</dt><dd><span data-bind="tankCapacity">5,000</span> <span data-unit="volume">L</span></dd></div>
+                      <div><dt>Draw rate</dt><dd><span id="tankDrawRate">0</span> <span data-unit="flow">L/min</span></dd></div>
+                      <div><dt>Estimated supply left</dt><dd id="tankSupplyLeft">Idle</dd></div>
+                    </dl>
+                  </div>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================= IRRIGATION SCHEDULE + ACTIVITY ============================= -->
+    <section class="section" id="activity" aria-labelledby="activityHeading">
+      <div class="container-fluid app-container">
+        <h2 class="section-heading" id="activityHeading">Irrigation Schedule &amp; Activity</h2>
+        <div class="row g-3 g-lg-4">
+          <div class="col-12 col-xl-5">
+            <article class="card card--fit schedule-card" aria-labelledby="scheduleFormHeading">
+              <div class="card-head">
+                <div>
+                  <h3 class="card-title" id="scheduleFormHeading">Irrigation Schedule</h3>
+                  <p class="card-subtitle">Plan upcoming irrigation sessions for your fields</p>
+                </div>
+              </div>
+              <form class="form-stack" id="scheduleForm" novalidate>
+                <div class="field">
+                  <label class="form-label" for="scheduleField">Select Field <span class="req" aria-hidden="true">*</span></label>
+                  <select class="form-select" id="scheduleField" name="field" required aria-describedby="scheduleFieldError"></select>
+                  <p class="field__error" id="scheduleFieldError" role="alert" hidden>Select the field that should be irrigated.</p>
+                </div>
+                <div class="row g-3">
+                  <div class="col-12 col-sm-6">
+                    <div class="field">
+                      <label class="form-label" for="scheduleDate">Select Date <span class="req" aria-hidden="true">*</span></label>
+                      <input class="form-control" type="date" id="scheduleDate" name="date" required aria-describedby="scheduleDateError">
+                      <p class="field__error" id="scheduleDateError" role="alert" hidden>Choose today or a future date.</p>
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-6">
+                    <div class="field">
+                      <label class="form-label" for="scheduleTime">Select Time <span class="req" aria-hidden="true">*</span></label>
+                      <input class="form-control" type="time" id="scheduleTime" name="time" required aria-describedby="scheduleTimeError">
+                      <p class="field__error" id="scheduleTimeError" role="alert" hidden>Enter a valid time.</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="row g-3">
+                  <div class="col-12 col-sm-6">
+                    <div class="field">
+                      <label class="form-label" for="scheduleDuration">Duration (minutes) <span class="req" aria-hidden="true">*</span></label>
+                      <input class="form-control" type="number" id="scheduleDuration" name="duration" min="1" max="180" step="1" value="20" required aria-describedby="scheduleDurationHelp scheduleDurationError">
+                      <p class="form-text" id="scheduleDurationHelp">Between 1 and 180 minutes.</p>
+                      <p class="field__error" id="scheduleDurationError" role="alert" hidden>Duration must be between 1 and 180 minutes.</p>
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-6">
+                    <div class="field">
+                      <label class="form-label" for="scheduleMode">Irrigation Mode <span class="req" aria-hidden="true">*</span></label>
+                      <select class="form-select" id="scheduleMode" name="mode" required aria-describedby="scheduleModeError">
+                        <option value="Manual">Manual</option>
+                        <option value="Automatic">Automatic</option>
+                        <option value="Scheduled" selected>Scheduled</option>
+                      </select>
+                      <p class="field__error" id="scheduleModeError" role="alert" hidden>Select an irrigation mode.</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-actions">
+                  <button class="btn btn--primary" type="submit" id="scheduleSubmitBtn">
+                    <i class="fa-solid fa-calendar-plus" aria-hidden="true"></i><span>Schedule Irrigation</span>
+                  </button>
+                  <button class="btn btn--ghost" type="reset" id="scheduleResetBtn">Clear</button>
+                </div>
+                <p class="form-note"><i class="fa-solid fa-circle-info" aria-hidden="true"></i> Schedules are stored in this browser only.</p>
+              </form>
+            </article>
+          </div>
+
+          <div class="col-12 col-xl-7">
+            <div class="stack">
+              <article class="card" aria-labelledby="scheduleListHeading">
+                <div class="card-head">
+                  <div>
+                    <h3 class="card-title" id="scheduleListHeading">Upcoming &amp; Recent Schedules</h3>
+                    <p class="card-subtitle">Scheduled tasks run in the configured irrigation mode</p>
+                  </div>
+                  <span class="count-chip" id="scheduleCount">0 tasks</span>
+                </div>
+                <ul class="schedule-list" id="scheduleList" role="list"></ul>
+                <div class="empty-state" id="scheduleEmpty" hidden>
+                  <span class="empty-state__icon" aria-hidden="true"><i class="fa-regular fa-calendar"></i></span>
+                  <h4 class="empty-state__title">No irrigation scheduled</h4>
+                  <p class="empty-state__text">Use the schedule form to plan the next irrigation session for one of your fields.</p>
+                </div>
+              </article>
+
+              <article class="card card--fit" aria-labelledby="historyHeading">
+                <div class="card-head card-head--wrap">
+                  <div>
+                    <h3 class="card-title" id="historyHeading">Recent Irrigation Activity</h3>
+                    <p class="card-subtitle">Completed and active irrigation sessions</p>
+                  </div>
+                  <span class="count-chip" id="activityCount">0 records</span>
+                </div>
+                <div class="filters" role="group" aria-label="Filter irrigation activity">
+                  <div class="filters__field">
+                    <label class="form-label form-label--sm" for="activityFilterField">Field</label>
+                    <select class="form-select form-select--sm" id="activityFilterField">
+                      <option value="">All fields</option>
+                    </select>
+                  </div>
+                  <div class="filters__field">
+                    <label class="form-label form-label--sm" for="activityFilterStatus">Status</label>
+                    <select class="form-select form-select--sm" id="activityFilterStatus">
+                      <option value="">All statuses</option>
+                      <option value="Completed">Completed</option>
+                      <option value="Running">Running</option>
+                      <option value="Scheduled">Scheduled</option>
+                      <option value="Stopped">Stopped</option>
+                    </select>
+                  </div>
+                  <div class="filters__field filters__field--grow">
+                    <label class="form-label form-label--sm" for="activitySearch">Search</label>
+                    <input class="form-control form-control--sm" type="search" id="activitySearch" placeholder="Search by field, mode or date" autocomplete="off">
+                  </div>
+                </div>
+                <div class="table-wrap">
+                  <table class="data-table" id="activityTable">
+                    <caption class="sr-only">Irrigation activity with date, field, duration, water used, mode and status</caption>
+                    <thead>
+                      <tr>
+                        <th scope="col">Date</th>
+                        <th scope="col">Field</th>
+                        <th scope="col">Duration</th>
+                        <th scope="col">Water Used</th>
+                        <th scope="col">Mode</th>
+                        <th scope="col">Status</th>
+                      </tr>
+                    </thead>
+                    <tbody id="activityTableBody"></tbody>
+                  </table>
+                </div>
+                <div class="empty-state" id="activityEmpty" hidden>
+                  <span class="empty-state__icon" aria-hidden="true"><i class="fa-solid fa-inbox"></i></span>
+                  <h4 class="empty-state__title">No irrigation history</h4>
+                  <p class="empty-state__text">Irrigation sessions you start or schedule will appear here with duration, water used and mode.</p>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================= FIELD MONITORING ============================= -->
+    <section class="section" id="fields" aria-labelledby="fieldsHeading">
+      <div class="container-fluid app-container">
+        <h2 class="section-heading" id="fieldsHeading">Field Monitoring</h2>
+        <div class="row g-3 g-lg-4" id="fieldGrid" role="group" aria-describedby="fieldsHelper"></div>
+        <p class="sr-only" id="fieldsHelper">Each field card lists crop, area, soil moisture, health status and irrigation advice. Use View Details for sensor history and field-level actions.</p>
+        <div class="empty-state empty-state--card" id="fieldsEmpty" hidden>
+          <span class="empty-state__icon" aria-hidden="true"><i class="fa-solid fa-map"></i></span>
+          <h4 class="empty-state__title">Field data unavailable</h4>
+          <p class="empty-state__text">Field records could not be loaded. Try refreshing the dashboard to receive the latest simulated readings.</p>
+          <button class="btn btn--primary btn--sm" type="button" data-retry="fields">Retry</button>
+        </div>
+
+        <h2 class="section-heading section-heading--spaced" id="cropsHeading">Crop Management</h2>
+        <p class="section-intro">Moisture targets are compared with live simulated readings for every crop in the demonstration farm.</p>
+        <div class="row g-3 g-lg-4" id="cropGrid" role="group" aria-labelledby="cropsHeading"></div>
+      </div>
+    </section>
+
+    <!-- ============================= ANALYTICS ============================= -->
+    <section class="section" id="analytics" aria-labelledby="analyticsHeading">
+      <div class="container-fluid app-container">
+        <h2 class="section-heading" id="analyticsHeading">Analytics</h2>
+        <div class="row g-3 g-lg-4">
+          <div class="col-12 col-xl-7">
+            <article class="card chart-card" aria-labelledby="soilChartHeading">
+              <div class="card-head card-head--wrap">
+                <div>
+                  <h3 class="card-title" id="soilChartHeading">Soil Moisture Monitoring</h3>
+                  <p class="card-subtitle">Average soil moisture across all monitored fields</p>
+                </div>
+                <div class="filters__field">
+                  <label class="form-label form-label--sm" for="soilRange">Period</label>
+                  <select class="form-select form-select--sm" id="soilRange">
+                    <option value="24h" selected>Last 24 Hours</option>
+                    <option value="7d">Last 7 Days</option>
+                    <option value="30d">Last 30 Days</option>
+                  </select>
+                </div>
+              </div>
+              <div class="chart-shell">
+                <div class="chart-loader" id="soilChartLoader" role="status" aria-live="polite">
+                  <span class="spinner" aria-hidden="true"></span><span>Loading soil moisture history</span>
+                </div>
+                <canvas id="soilChart" aria-label="Line chart of soil moisture percentage over the selected period" role="img"></canvas>
+              </div>
+              <div class="chart-summary" id="soilChartSummary"></div>
+            </article>
+          </div>
+
+          <div class="col-12 col-xl-5">
+            <article class="card chart-card" aria-labelledby="waterChartHeading">
+              <div class="card-head card-head--wrap">
+                <div>
+                  <h3 class="card-title" id="waterChartHeading">Water Usage</h3>
+                  <p class="card-subtitle">Water consumption for the last 7 days</p>
+                </div>
+              </div>
+              <div class="chart-shell chart-shell--short">
+                <div class="chart-loader" id="waterChartLoader" role="status" aria-live="polite">
+                  <span class="spinner" aria-hidden="true"></span><span>Loading water usage</span>
+                </div>
+                <canvas id="waterChart" aria-label="Bar chart of daily water consumption for the last seven days" role="img"></canvas>
+              </div>
+              <div class="weekly-summary">
+                <div class="weekly-summary__main">
+                  <span class="weekly-summary__label">This Week</span>
+                  <span class="weekly-summary__value"><span id="weekTotal">7,700</span> <span data-unit="volume">L</span></span>
+                </div>
+                <div class="weekly-summary__delta" id="weekDelta">
+                  <i class="fa-solid fa-arrow-trend-down" aria-hidden="true"></i>
+                  <span>12% less than previous week</span>
+                </div>
+                <dl class="weekly-summary__facts">
+                  <div><dt>Daily average</dt><dd id="weekAverage">1,100 L</dd></div>
+                  <div><dt>Highest day</dt><dd id="weekHighest">Wednesday</dd></div>
+                  <div><dt>Previous week</dt><dd id="weekPrevious">8,750 L</dd></div>
+                </dl>
+              </div>
+            </article>
+          </div>
+
+          <div class="col-12 col-xl-5">
+            <article class="card card--fit health-card" aria-labelledby="healthHeading">
+              <div class="card-head">
+                <div>
+                  <h3 class="card-title" id="healthHeading">Farm Health Score</h3>
+                  <p class="card-subtitle">Calculated from current simulated dashboard values</p>
+                </div>
+              </div>
+              <div class="health-card__body">
+                <div class="health-ring" id="healthRing">
+                  <svg viewBox="0 0 120 120" width="140" height="140" role="img" aria-labelledby="healthRingLabel">
+                    <circle class="health-ring__track" cx="60" cy="60" r="52" fill="none" stroke-width="10"></circle>
+                    <circle class="health-ring__value" id="healthRingCircle" cx="60" cy="60" r="52" fill="none" stroke-width="10"
+                            stroke-dasharray="326.7" stroke-dashoffset="326.7" stroke-linecap="round"></circle>
+                    <text class="health-ring__score" id="healthRingScore" x="60" y="58" text-anchor="middle">--</text>
+                    <text class="health-ring__unit" x="60" y="78" text-anchor="middle">out of 100</text>
+                    <title id="healthRingLabel">Farm health score</title>
+                  </svg>
+                </div>
+                <ul class="score-list" id="scoreList" role="list"></ul>
+              </div>
+              <p class="health-card__note">Demonstration score derived from soil condition, water availability, irrigation efficiency and crop condition.</p>
+            </article>
+          </div>
+
+          <div class="col-12 col-xl-7">
+            <article class="card weather-card" aria-labelledby="weatherHeading">
+              <div class="card-head card-head--wrap">
+                <div>
+                  <h3 class="card-title" id="weatherHeading">Weather Information</h3>
+                  <p class="card-subtitle">Simulated local weather for irrigation planning</p>
+                </div>
+                <button class="btn btn--ghost btn--sm" type="button" id="refreshWeatherBtn">
+                  <i class="fa-solid fa-arrows-rotate" aria-hidden="true"></i><span>Update Weather</span>
+                </button>
+              </div>
+              <div class="weather-card__grid">
+                <div class="weather-card__now">
+                  <img src="assets/images/weather-sky.jpg" width="1200" height="675" loading="lazy" decoding="async"
+                       alt="Clouded sky above a green farm landscape">
+                  <div class="weather-card__overlay">
+                    <p class="weather-temp"><span data-bind="temperature">--</span><span data-unit="temp">&deg;C</span></p>
+                    <p class="weather-cond" id="weatherCondition">Partly Cloudy</p>
+                  </div>
+                </div>
+                <dl class="weather-facts">
+                  <div><dt><i class="fa-solid fa-droplet" aria-hidden="true"></i> Humidity</dt><dd><span data-bind="humidity">--</span>%</dd></div>
+                  <div><dt><i class="fa-solid fa-wind" aria-hidden="true"></i> Wind</dt><dd><span id="weatherWind">12</span> <span data-unit="speed">km/h</span></dd></div>
+                  <div><dt><i class="fa-solid fa-cloud-rain" aria-hidden="true"></i> Rain chance</dt><dd><span id="weatherRain">20</span>%</dd></div>
+                  <div><dt><i class="fa-solid fa-sun" aria-hidden="true"></i> Condition</dt><dd id="weatherConditionShort">Partly Cloudy</dd></div>
+                </dl>
+              </div>
+              <div class="forecast">
+                <h4 class="forecast__title">Today&rsquo;s Forecast</h4>
+                <ul class="forecast__list" role="list">
+                  <li class="forecast__item">
+                    <span class="forecast__slot"><i class="fa-solid fa-cloud-sun" aria-hidden="true"></i> Morning</span>
+                    <span class="forecast__temp"><span id="forecastMorning">26</span><span data-unit="temp">&deg;C</span></span>
+                  </li>
+                  <li class="forecast__item">
+                    <span class="forecast__slot"><i class="fa-solid fa-sun" aria-hidden="true"></i> Afternoon</span>
+                    <span class="forecast__temp"><span id="forecastAfternoon">30</span><span data-unit="temp">&deg;C</span></span>
+                  </li>
+                  <li class="forecast__item">
+                    <span class="forecast__slot"><i class="fa-solid fa-cloud-moon" aria-hidden="true"></i> Evening</span>
+                    <span class="forecast__temp"><span id="forecastEvening">27</span><span data-unit="temp">&deg;C</span></span>
+                  </li>
+                </ul>
+                <p class="forecast__note" id="forecastNote">Rain chance is low, irrigation can proceed as planned.</p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================= ALERTS ============================= -->
+    <section class="section" id="alerts" aria-labelledby="alertsHeading">
+      <div class="container-fluid app-container">
+        <h2 class="section-heading" id="alertsHeading">Alerts &amp; Notifications</h2>
+        <div class="row g-3 g-lg-4">
+          <div class="col-12 col-lg-7">
+            <article class="card card--fit" aria-labelledby="alertListHeading">
+              <div class="card-head card-head--wrap">
+                <div>
+                  <h3 class="card-title" id="alertListHeading">Active Alerts</h3>
+                  <p class="card-subtitle">Generated from simulated thresholds and pump events</p>
+                </div>
+                <div class="filters">
+                  <div class="filters__field">
+                    <label class="form-label form-label--sm" for="alertFilter">Show</label>
+                    <select class="form-select form-select--sm" id="alertFilter">
+                      <option value="all">All alerts</option>
+                      <option value="unread">Unread only</option>
+                      <option value="critical">Critical</option>
+                      <option value="warning">Warnings</option>
+                      <option value="info">Information</option>
+                    </select>
+                  </div>
+                  <button class="btn btn--ghost btn--sm" type="button" id="markAllReadBtn2">
+                    <i class="fa-solid fa-check-double" aria-hidden="true"></i><span>Mark all read</span>
+                  </button>
+                </div>
+              </div>
+              <ul class="alert-list" id="alertList" role="list" aria-live="polite"></ul>
+              <div class="empty-state" id="alertEmpty" hidden>
+                <span class="empty-state__icon" aria-hidden="true"><i class="fa-regular fa-bell-slash"></i></span>
+                <h4 class="empty-state__title">No alerts</h4>
+                <p class="empty-state__text">Nothing needs your attention right now. New alerts appear here when a simulated threshold is crossed.</p>
+              </div>
+            </article>
+          </div>
+
+          <div class="col-12 col-lg-5">
+            <div class="stack">
+              <article class="card alert-policy" aria-labelledby="alertPolicyHeading">
+                <div class="card-head">
+                  <div>
+                    <h3 class="card-title" id="alertPolicyHeading">Alert Rules</h3>
+                    <p class="card-subtitle">Thresholds evaluated on every sensor cycle</p>
+                  </div>
+                </div>
+                <ul class="policy-list" role="list">
+                  <li class="policy-list__item">
+                    <span class="severity severity--critical" aria-hidden="true"><i class="fa-solid fa-circle-exclamation"></i></span>
+                    <div>
+                      <p class="policy-list__title">Critical &mdash; Low soil moisture</p>
+                      <p class="policy-list__text">Raised when field soil moisture drops below the configured threshold (<span id="policyThreshold">30%</span>).</p>
+                    </div>
+                  </li>
+                  <li class="policy-list__item">
+                    <span class="severity severity--warning" aria-hidden="true"><i class="fa-solid fa-triangle-exclamation"></i></span>
+                    <div>
+                      <p class="policy-list__title">Warning &mdash; Water tank level</p>
+                      <p class="policy-list__text">Raised when the tank falls below 30% of capacity, and again below 15%.</p>
+                    </div>
+                  </li>
+                  <li class="policy-list__item">
+                    <span class="severity severity--success" aria-hidden="true"><i class="fa-solid fa-circle-check"></i></span>
+                    <div>
+                      <p class="policy-list__title">Success &mdash; Irrigation completed</p>
+                      <p class="policy-list__text">Raised when a pump session or scheduled irrigation finishes.</p>
+                    </div>
+                  </li>
+                  <li class="policy-list__item">
+                    <span class="severity severity--info" aria-hidden="true"><i class="fa-solid fa-circle-info"></i></span>
+                    <div>
+                      <p class="policy-list__title">Information &mdash; Pump and sensor events</p>
+                      <p class="policy-list__text">Pump start/stop events and sensor connectivity changes are recorded here.</p>
+                    </div>
+                  </li>
+                </ul>
+                <div class="alert-policy__foot">
+                  <div class="toggle-row">
+                    <div>
+                      <span class="toggle-row__label" id="toastNotificationsLabel">Toast notifications</span>
+                      <p class="toggle-row__help">Show on-screen messages for important events.</p>
+                    </div>
+                    <div class="form-check form-switch">
+                      <input class="form-check-input" type="checkbox" role="switch" id="notificationsToggleAlerts" aria-describedby="notificationsToggleAlertsHelp">
+                      <label class="form-check-label sr-only" for="notificationsToggleAlerts" id="notificationsToggleAlertsHelp">Enable toast notifications</label>
+                    </div>
+                  </div>
+                </div>
+              </article>
+
+              <article class="card sensor-card" aria-labelledby="sensorHeading">
+                <div class="card-head">
+                  <div>
+                    <h3 class="card-title" id="sensorHeading">Sensor Network</h3>
+                    <p class="card-subtitle">Simulated field sensor nodes</p>
+                  </div>
+                  <span class="status-tag" id="sensorStatusTag" data-status="sensor">
+                    <span class="status-tag__dot" aria-hidden="true"></span>
+                    <span class="status-tag__text" id="sensorStatusText">Online</span>
+                  </span>
+                </div>
+                <ul class="sensor-list" id="sensorList" role="list"></ul>
+                <div class="error-state" id="sensorErrorState" hidden role="alert">
+                  <span class="error-state__icon" aria-hidden="true"><i class="fa-solid fa-tower-broadcast"></i></span>
+                  <h4 class="error-state__title">No sensor data available</h4>
+                  <p class="error-state__text">Try refreshing the dashboard to receive the latest simulated readings.</p>
+                  <button class="btn btn--primary btn--sm" type="button" data-retry="sensors">Refresh now</button>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================= SETTINGS ============================= -->
+    <section class="section" id="settings" aria-labelledby="settingsHeading">
+      <div class="container-fluid app-container">
+        <h2 class="section-heading" id="settingsHeading">Settings</h2>
+        <div class="row g-3 g-lg-4">
+          <div class="col-12 col-xl-8">
+            <article class="card card--fit" aria-labelledby="irrigationSettingsHeading">
+              <div class="card-head">
+                <div>
+                  <h3 class="card-title" id="irrigationSettingsHeading">Irrigation Settings</h3>
+                  <p class="card-subtitle">Applied instantly across the dashboard and stored in this browser</p>
+                </div>
+                <span class="save-state" id="settingsSaveState" role="status" aria-live="polite"></span>
+              </div>
+              <form class="form-stack" id="settingsForm" novalidate>
+                <div class="row g-3 g-lg-4">
+                  <div class="col-12 col-lg-6">
+                    <div class="field">
+                      <label class="form-label" for="thresholdInput">Soil Moisture Threshold (%) <span class="req" aria-hidden="true">*</span></label>
+                      <div class="range-row">
+                        <input class="form-range" type="range" id="thresholdRange" min="15" max="60" step="1" value="30" aria-label="Soil moisture threshold slider">
+                        <input class="form-control form-control--sm" type="number" id="thresholdInput" name="threshold" min="15" max="60" step="1" value="30" required aria-describedby="thresholdHelp thresholdError">
+                      </div>
+                      <p class="form-text" id="thresholdHelp">Irrigation is recommended when soil moisture falls below this value. Default: 30%.</p>
+                      <p class="field__error" id="thresholdError" role="alert" hidden>The threshold must be between 15% and 60%.</p>
+                    </div>
+                  </div>
+
+                  <div class="col-12 col-lg-6">
+                    <div class="field">
+                      <label class="form-label" for="tankCapacityInput">Water Tank Capacity (L) <span class="req" aria-hidden="true">*</span></label>
+                      <input class="form-control" type="number" id="tankCapacityInput" name="tankCapacity" min="1000" max="20000" step="100" value="5000" required aria-describedby="tankCapacityHelp tankCapacityError">
+                      <p class="form-text" id="tankCapacityHelp">Used to convert tank level into litres. Between 1,000 and 20,000 L.</p>
+                      <p class="field__error" id="tankCapacityError" role="alert" hidden>Tank capacity must be between 1,000 and 20,000 litres.</p>
+                    </div>
+                  </div>
+
+                  <div class="col-12 col-lg-6">
+                    <div class="field">
+                      <label class="form-label" for="unitsSelect">Measurement Units</label>
+                      <select class="form-select" id="unitsSelect" name="units">
+                        <option value="metric" selected>Metric (&deg;C, litres, km/h)</option>
+                        <option value="imperial">Imperial (&deg;F, gallons, mph)</option>
+                      </select>
+                      <p class="form-text">Changes how values are displayed. Stored values remain in metric.</p>
+                    </div>
+                  </div>
+
+                  <div class="col-12 col-lg-6">
+                    <div class="field">
+                      <span class="form-label" id="autoIrrigationLabel">Automatic Irrigation</span>
+                      <div class="form-check form-switch form-check--lg">
+                        <input class="form-check-input" type="checkbox" role="switch" id="autoIrrigationToggle" name="autoIrrigation" aria-describedby="autoIrrigationHelp">
+                        <label class="form-check-label" for="autoIrrigationToggle" id="autoIrrigationHelp">Start the pump automatically when soil moisture falls below the threshold</label>
+                      </div>
+                      <p class="form-text" id="autoIrrigationState">Currently disabled.</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-actions">
+                  <button class="btn btn--primary" type="submit" id="saveSettingsBtn">
+                    <i class="fa-solid fa-floppy-disk" aria-hidden="true"></i><span>Save Settings</span>
+                  </button>
+                  <button class="btn btn--ghost" type="button" id="resetSettingsBtn">
+                    <i class="fa-solid fa-rotate-left" aria-hidden="true"></i><span>Reset to Defaults</span>
+                  </button>
+                </div>
+              </form>
+            </article>
+          </div>
+
+          <div class="col-12 col-xl-4">
+            <div class="stack">
+              <article class="card" aria-labelledby="simulationHeading">
+                <div class="card-head">
+                  <div>
+                    <h3 class="card-title" id="simulationHeading">Data &amp; Simulation</h3>
+                    <p class="card-subtitle">Controls for the simulated sensor gateway</p>
+                  </div>
+                </div>
+                <div class="field">
+                  <label class="form-label" for="simSpeed">Sensor update speed</label>
+                  <select class="form-select" id="simSpeed">
+                    <option value="2000">Fast - every 2 seconds</option>
+                    <option value="5000" selected>Normal - every 5 seconds</option>
+                    <option value="10000">Slow - every 10 seconds</option>
+                  </select>
+                  <p class="form-text">Simulated soil moisture, temperature, humidity and tank level update at this interval.</p>
+                </div>
+                <div class="toggle-row">
+                  <div>
+                    <span class="toggle-row__label">Live sensor updates</span>
+                    <p class="toggle-row__help" id="simPauseHelp">Pause to freeze readings for review.</p>
+                  </div>
+                  <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" role="switch" id="simPauseToggle" checked aria-label="Live sensor updates" aria-describedby="simPauseHelp">
+                    
+                  </div>
+                </div>
+                <div class="toggle-row">
+                  <div>
+                    <span class="toggle-row__label">Simulate sensor outage</span>
+                    <p class="toggle-row__help" id="simOutageHelp">Shows how the dashboard behaves without a sensor feed.</p>
+                  </div>
+                  <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" role="switch" id="simOutageToggle" aria-label="Simulate a sensor outage" aria-describedby="simOutageHelp">
+                    
+                  </div>
+                </div>
+                <div class="sim-facts">
+                  <div><span class="sim-facts__label">Updates this session</span><span class="sim-facts__value" id="simUpdateCount">0</span></div>
+                  <div><span class="sim-facts__label">Next update</span><span class="sim-facts__value" id="simNextUpdate">5s</span></div>
+                  <div><span class="sim-facts__label">Data source</span><span class="sim-facts__value">Simulated</span></div>
+                </div>
+              </article>
+
+              <article class="card" aria-labelledby="dataHeading">
+                <div class="card-head">
+                  <div>
+                    <h3 class="card-title" id="dataHeading">Stored Data</h3>
+                    <p class="card-subtitle">Everything is saved in this browser with localStorage</p>
+                  </div>
+                </div>
+                <dl class="storage-list" id="storageList">
+                  <div><dt>Settings</dt><dd id="storageSettings">Default values</dd></div>
+                  <div><dt>Alerts</dt><dd id="storageAlerts">0 saved</dd></div>
+                  <div><dt>Activity records</dt><dd id="storageActivity">0 saved</dd></div>
+                  <div><dt>Schedules</dt><dd id="storageSchedules">0 saved</dd></div>
+                  <div><dt>Active session</dt><dd id="storageSession">None</dd></div>
+                </dl>
+                <div class="form-actions">
+                  <button class="btn btn--ghost btn--sm" type="button" id="exportDataBtn2"><i class="fa-solid fa-file-arrow-down" aria-hidden="true"></i><span>Export JSON</span></button>
+                  <button class="btn btn--ghost btn--sm" type="button" id="resetDemoBtn2"><i class="fa-solid fa-trash-can" aria-hidden="true"></i><span>Clear saved data</span></button>
+                </div>
+                <p class="form-note"><i class="fa-solid fa-shield-halved" aria-hidden="true"></i> This demonstration stores no personal data on a server.</p>
+              </article>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================= HELP / SUPPORT ============================= -->
+    <section class="section section--last" id="help" aria-labelledby="helpHeading">
+      <div class="container-fluid app-container">
+        <h2 class="section-heading" id="helpHeading">Help &amp; Support</h2>
+        <div class="row g-3 g-lg-4">
+          <div class="col-12 col-lg-7">
+            <article class="card card--fit" aria-labelledby="howItWorksHeading">
+              <div class="card-head">
+                <div>
+                  <h3 class="card-title" id="howItWorksHeading">How this dashboard works</h3>
+                  <p class="card-subtitle">Monitor, analyse, recommend, control and save water</p>
+                </div>
+              </div>
+              <ol class="steps">
+                <li class="steps__item"><span class="steps__index" aria-hidden="true">1</span><div><p class="steps__title">Monitor</p><p class="steps__text">Simulated sensors on Field A, Field B and Field C report soil moisture, temperature, humidity and tank level every few seconds.</p></div></li>
+                <li class="steps__item"><span class="steps__index" aria-hidden="true">2</span><div><p class="steps__title">Analyse</p><p class="steps__text">Charts summarise soil moisture trends and daily water consumption, with a farm health score.</p></div></li>
+                <li class="steps__item"><span class="steps__index" aria-hidden="true">3</span><div><p class="steps__title">Recommend</p><p class="steps__text">When moisture drops below your threshold, the dashboard suggests a duration and water estimate.</p></div></li>
+                <li class="steps__item"><span class="steps__index" aria-hidden="true">4</span><div><p class="steps__title">Control</p><p class="steps__text">Start or stop the pump in manual mode, or let automatic mode react to the threshold rule.</p></div></li>
+                <li class="steps__item"><span class="steps__index" aria-hidden="true">5</span><div><p class="steps__title">Save water</p><p class="steps__text">Schedules and thresholds keep consumption in view so water is only used when it is needed.</p></div></li>
+              </ol>
+            </article>
+          </div>
+          <div class="col-12 col-lg-5">
+            <div class="stack">
+              <article class="card" aria-labelledby="faqHeading">
+                <div class="card-head">
+                  <div>
+                    <h3 class="card-title" id="faqHeading">Frequently asked</h3>
+                    <p class="card-subtitle">Common questions about this demonstration</p>
+                  </div>
+                </div>
+                <div class="accordion accordion--plain" id="faqAccordion">
+                  <div class="accordion-item">
+                    <h4 class="accordion-header">
+                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq1" aria-expanded="false" aria-controls="faq1">Does this dashboard need real sensors?</h4>
+                    </h4>
+                    <div id="faq1" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                      <div class="accordion-body">No. All readings are generated in the browser by a simulated sensor gateway, so the dashboard runs without hardware, servers or API keys.</div>
+                    </div>
+                  </div>
+                  <div class="accordion-item">
+                    <h4 class="accordion-header">
+                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2" aria-expanded="false" aria-controls="faq2">Where is my data stored?</button>
+                    </h4>
+                    <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                      <div class="accordion-body">Settings, schedules, alerts and activity are stored in your browser with localStorage. Clearing saved data resets the dashboard to its demonstration defaults.</div>
+                    </div>
+                  </div>
+                  <div class="accordion-item">
+                    <h4 class="accordion-header">
+                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3" aria-expanded="false" aria-controls="faq3">Is the recommendation agronomic advice?</button>
+                    </h4>
+                    <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                      <div class="accordion-body">No. Recommendations follow a simple demonstration rule based on the soil moisture threshold and simulated values. They are not a real agricultural or AI prediction.</div>
+                    </div>
+                  </div>
+                  <div class="accordion-item">
+                    <h4 class="accordion-header">
+                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4" aria-expanded="false" aria-controls="faq4">How is the farm health score calculated?</button>
+                    </h4>
+                    <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                      <div class="accordion-body">It averages four sub-scores: soil condition, water availability, irrigation efficiency and crop condition, each derived from the current simulated dashboard values.</div>
+                    </div>
+                  </div>
+                </div>
+              </article>
+
+              <article class="card" aria-labelledby="contactHeading">
+                <div class="card-head">
+                  <div>
+                    <h3 class="card-title" id="contactHeading">Support Contact</h3>
+                    <p class="card-subtitle">For workshop and demonstration support</p>
+                  </div>
+                </div>
+                <dl class="contact-list">
+                  <div><dt><i class="fa-solid fa-envelope" aria-hidden="true"></i> Email</dt><dd><a href="mailto:support@aquafarm.example.com">support@aquafarm.example.com</a></dd></div>
+                  <div><dt><i class="fa-solid fa-phone" aria-hidden="true"></i> Phone</dt><dd><a href="tel:+910000000000">+91 00000 00000</a></dd></div>
+                  <div><dt><i class="fa-solid fa-location-dot" aria-hidden="true"></i> Address</dt><dd>To Be Decided</dd></div>
+                  <div><dt><i class="fa-regular fa-clock" aria-hidden="true"></i> Support hours</dt><dd>Monday to Saturday, 09:00 to 18:00 IST</dd></div>
+                </dl>
+                <p class="form-note"><i class="fa-solid fa-circle-info" aria-hidden="true"></i> Contact details are demonstration placeholders and are published as To Be Decided until the workshop organisers confirm them.</p>
+              </article>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============================= FOOTER ============================= -->
+  <footer class="app-footer">
+    <div class="container-fluid app-container">
+      <div class="app-footer__grid">
+        <div class="app-footer__brand">
+          <span class="brand__mark brand__mark--sm" aria-hidden="true">
+            <svg viewBox="0 0 40 40" width="32" height="32" aria-hidden="true" focusable="false">
+              <rect x="1" y="1" width="38" height="38" rx="11" fill="#0F4C3A"></rect>
+              <path d="M20 8c4.2 5.1 6.3 8.6 6.3 11.6A6.3 6.3 0 0 1 20 26a6.3 6.3 0 0 1-6.3-6.4C13.7 16.6 15.8 13.1 20 8z" fill="#8DE0AC"></path>
+              <path d="M13 29.5c2.1-2.4 6.4-3.2 10.1-1.4 1.9.9 3.4.6 4.4-.4-.6 3-3.3 4.6-6.6 4a9.6 9.6 0 0 0-7.9 1.2c-.3-1.4-.3-2.5 0-3.4z" fill="#2E8B62"></path>
+            </svg>
+          </span>
+          <div>
+            <p class="app-footer__title">AquaFarm &mdash; Smart Irrigation Management</p>
+            <p class="app-footer__tagline">Technology for smarter and more efficient irrigation.</p>
+          </div>
+        </div>
+        <nav class="app-footer__nav" aria-label="Footer">
+          <a href="#overview">Dashboard</a>
+          <a href="#analytics">Analytics</a>
+          <a href="#settings">Settings</a>
+          <a href="#help">Help</a>
+        </nav>
+        <div class="app-footer__meta">
+          <p class="app-footer__note">Sensor readings on this site are simulated in the browser for demonstration purposes.</p>
+          <p class="app-footer__legal">
+            <button class="link-btn" type="button" data-bs-toggle="modal" data-bs-target="#privacyModal">Privacy Policy</button>
+            <span aria-hidden="true">&middot;</span>
+            <button class="link-btn" type="button" data-bs-toggle="modal" data-bs-target="#termsModal">Terms &amp; Conditions</button>
+            <span aria-hidden="true">&middot;</span>
+            <button class="link-btn" type="button" data-bs-toggle="modal" data-bs-target="#cookiesModal">Cookie Preferences</button>
+          </p>
+          <p class="app-footer__copy">&copy; 2026 AquaFarm. All rights reserved.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Sticky mobile action bar -->
+  <div class="mobile-actionbar" id="mobileActionBar" role="region" aria-label="Quick irrigation controls">
+    <div class="mobile-actionbar__status">
+      <span class="status-tag status-tag--sm" data-status="pump"><span class="status-tag__dot" aria-hidden="true"></span><span class="status-tag__text" id="mobilePumpStatus">Pump OFF</span></span>
+      <span class="mobile-actionbar__hint" id="mobileSoilHint">Soil moisture --%</span>
+    </div>
+    <div class="mobile-actionbar__actions">
+      <button class="btn btn--ghost btn--sm" type="button" id="mobileRefreshBtn"><i class="fa-solid fa-arrows-rotate" aria-hidden="true"></i><span>Refresh</span></button>
+      <button class="btn btn--primary btn--sm" type="button" id="mobilePumpBtn"><i class="fa-solid fa-power-off" aria-hidden="true"></i><span id="mobilePumpBtnText">Start Pump</span></button>
+    </div>
+  </div>
+
+  <!-- Toast region -->
+  <div class="toast-region" id="toastRegion" role="region" aria-label="Notifications" aria-live="polite" aria-relevant="additions"></div>
+
+  <!-- ============================= MODALS ============================= -->
+  <div class="modal fade" id="fieldModal" tabindex="-1" aria-labelledby="fieldModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div>
+            <h2 class="modal-title" id="fieldModalTitle">Field details</h2>
+            <p class="modal-subtitle" id="fieldModalSubtitle">Crop, sensor history and irrigation status</p>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="fieldModalBody"></div>
+        <div class="modal-footer" id="fieldModalFooter"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="privacyModal" tabindex="-1" aria-labelledby="privacyModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title" id="privacyModalTitle">Privacy Policy</h2>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body legal">
+          <p class="legal__updated">Last updated: 18 September 2026</p>
+          <h3>1. About this policy</h3>
+          <p>AquaFarm is a demonstration smart irrigation dashboard. This policy explains what information the dashboard processes when you open it in a browser.</p>
+          <h3>2. Information we process</h3>
+          <p>The dashboard does not require an account and does not transmit personal information to a server. The following values are stored locally in your browser using localStorage:</p>
+          <ul>
+            <li>Irrigation settings such as the soil moisture threshold, tank capacity, unit preference and automatic irrigation toggle.</li>
+            <li>Schedules you create, activity records generated during your session, alert read states and export files you request.</li>
+          </ul>
+          <h3>3. Simulated sensor data</h3>
+          <p>Soil moisture, temperature, humidity, tank level, water consumption and weather values are generated in the browser for demonstration purposes. They do not describe any real field.</p>
+          <h3>4. Analytics</h3>
+          <p>The dashboard records anonymous interaction events (such as refreshing readings, toggling the pump or saving settings) in memory for demonstration. No analytics cookies or third-party trackers are used.</p>
+          <h3>5. Your control</h3>
+          <p>You can clear all stored values at any time with <em>Clear saved data</em> in Settings, which removes everything this dashboard has saved in your browser.</p>
+          <h3>6. Cookies</h3>
+          <p>This dashboard sets no cookies. Local storage is used only for the functionality described above.</p>
+          <h3>7. Contact</h3>
+          <p>Privacy questions: <a href="mailto:support@aquafarm.example.com">support@aquafarm.example.com</a> (demonstration address).</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn--primary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title" id="termsModalTitle">Terms &amp; Conditions</h2>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body legal">
+          <p class="legal__updated">Last updated: 18 September 2026</p>
+          <h3>1. Demonstration purpose</h3>
+          <p>AquaFarm is provided as a demonstration and workshop application. All sensor readings, weather values, water usage figures, recommendation durations and health scores are simulated in the browser.</p>
+          <h3>2. No agronomic advice</h3>
+          <p>Irrigation recommendations follow a simple rule based on the configured soil moisture threshold. They are not agricultural advice and must not be used to make real irrigation decisions.</p>
+          <h3>3. Acceptable use</h3>
+          <p>You may use the dashboard for evaluation, teaching and demonstration. Do not present simulated readings as real sensor measurements.</p>
+          <h3>4. Availability and warranty</h3>
+          <p>The dashboard is provided as is, without warranties of any kind. Simulated values, availability and browser storage behaviour may change without notice.</p>
+          <h3>5. Intellectual property</h3>
+          <p>Interface design, code and content of this demonstration belong to the project owners. Photographs are used under the licences credited in the project README.</p>
+          <h3>6. Liability</h3>
+          <p>The project owners are not liable for crop loss, water usage or other damages arising from reliance on simulated data.</p>
+          <h3>7. Contact</h3>
+          <p>Questions: <a href="mailto:support@aquafarm.example.com">support@aquafarm.example.com</a> (demonstration address).</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn--primary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="cookiesModal" tabindex="-1" aria-labelledby="cookiesModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title" id="cookiesModalTitle">Cookie Preferences</h2>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>AquaFarm does not use cookies and does not load third-party trackers. Because no cookies are set, no consent banner is required.</p>
+          <p class="form-text">Storage you can control:</p>
+          <div class="toggle-row">
+            <div>
+              <span class="toggle-row__label">Local dashboard storage</span>
+              <p class="toggle-row__help">Required to remember settings, schedules and alerts in this browser.</p>
+            </div>
+            <div class="form-check form-switch">
+              <input class="form-check-input" type="checkbox" role="switch" id="cookiePrefsToggle" checked>
+              <label class="form-check-label sr-only" for="cookiePrefsToggle">Allow local dashboard storage</label>
+            </div>
+          </div>
+          <p class="form-note"><i class="fa-solid fa-circle-info" aria-hidden="true"></i> Disabling local storage keeps the dashboard usable but settings will not be remembered after a refresh.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn--primary" data-bs-dismiss="modal">Done</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <noscript>
+    <div class="noscript-banner" role="alert">
+      <strong>JavaScript is required.</strong> The AquaFarm dashboard renders simulated sensor readings, charts and controls with JavaScript. Enable JavaScript to use the dashboard.
+    </div>
+  </noscript>
+
+  <script src="assets/vendor/bootstrap/bootstrap.bundle.min.js" defer></script>
+  <script src="assets/vendor/chartjs/chart.umd.min.js" defer></script>
+  <script src="script.js" defer></script>
+</body>
+</html>

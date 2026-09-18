@@ -1,0 +1,198 @@
+{
+  "exportedAt": "2026-09-18T05:43:24.088Z",
+  "application": "AquaFarm Smart Irrigation Management Dashboard",
+  "note": "All values are simulated demonstration data generated in the browser.",
+  "settings": {
+    "threshold": 30,
+    "autoIrrigation": false,
+    "notifications": true,
+    "tankCapacity": 5000,
+    "units": "metric"
+  },
+  "sensors": {
+    "soilMoisture": 40,
+    "temperature": 28.0315365093857,
+    "humidity": 62.23099766744614,
+    "tankPercent": 75.9465089003014,
+    "waterUsedToday": 1242.6745549849302,
+    "windSpeed": 12,
+    "rainChance": 20,
+    "condition": "Partly Cloudy",
+    "forecast": {
+      "morning": 26,
+      "afternoon": 30,
+      "evening": 27
+    }
+  },
+  "fields": [
+    {
+      "id": "A",
+      "name": "Field A",
+      "crop": "Rice",
+      "stage": "Vegetative",
+      "area": 2.5,
+      "moisture": 41.7,
+      "band": [
+        40,
+        60
+      ],
+      "sensor": "AF-01"
+    },
+    {
+      "id": "B",
+      "name": "Field B",
+      "crop": "Tomato",
+      "stage": "Flowering",
+      "area": 1.5,
+      "moisture": 28.3,
+      "band": [
+        35,
+        55
+      ],
+      "sensor": "AF-02"
+    },
+    {
+      "id": "C",
+      "name": "Field C",
+      "crop": "Cotton",
+      "stage": "Squaring",
+      "area": 3,
+      "moisture": 50.6,
+      "band": [
+        40,
+        60
+      ],
+      "sensor": "AF-03"
+    }
+  ],
+  "pump": {
+    "on": false,
+    "mode": "Manual",
+    "fieldId": "B"
+  },
+  "alerts": [
+    {
+      "id": "alert-mu6j8qby-oo7e3",
+      "severity": "warning",
+      "title": "Sensor feed offline",
+      "text": "The simulated sensor gateway stopped reporting. Readings are unavailable until the feed is restored.",
+      "fieldId": null,
+      "key": "sensor-outage",
+      "at": "2026-09-18T05:43:17.326Z",
+      "read": false
+    },
+    {
+      "id": "alert-mu6j8osf-hd8lg",
+      "severity": "critical",
+      "title": "Low Soil Moisture",
+      "text": "Field B moisture has fallen below the configured threshold (28% of 30%).",
+      "fieldId": "B",
+      "key": "low-moisture-B",
+      "at": "2026-09-18T05:43:15.327Z",
+      "read": false
+    },
+    {
+      "id": "alert-mu6j8ogs-sn5a7",
+      "severity": "info",
+      "title": "Irrigation started",
+      "text": "Pump turned ON for Field B in manual mode.",
+      "fieldId": "B",
+      "key": "pump-start-B",
+      "at": "2026-09-18T05:43:14.908Z",
+      "read": false
+    },
+    {
+      "id": "alert-mu6j8gtj-rffw6",
+      "severity": "critical",
+      "title": "Low Soil Moisture",
+      "text": "Field B moisture has fallen below the configured threshold (28% of 30%).",
+      "fieldId": "B",
+      "key": "low-moisture-B",
+      "at": "2026-09-18T05:37:04.998Z",
+      "read": true
+    },
+    {
+      "id": "alert-mu6j8gtj-n1snk",
+      "severity": "success",
+      "title": "Irrigation Completed",
+      "text": "Field A irrigation completed successfully. 340 L used in 20 minutes.",
+      "fieldId": "A",
+      "key": "irrigation-completed-A",
+      "at": "2026-09-18T08:30:00.000Z",
+      "read": true
+    },
+    {
+      "id": "alert-mu6j8gtj-rd3ii",
+      "severity": "info",
+      "title": "Sensor Network Online",
+      "text": "3 simulated sensor nodes are reporting normally across Field A, Field B and Field C.",
+      "fieldId": null,
+      "key": "sensor-online",
+      "at": "2026-09-18T05:31:04.998Z",
+      "read": true
+    }
+  ],
+  "activity": [
+    {
+      "id": "act-mu6j8ogr-21v9a",
+      "at": "2026-09-18T05:43:16.377Z",
+      "fieldId": "B",
+      "durationMin": 1,
+      "waterL": 3,
+      "mode": "Manual",
+      "status": "Stopped"
+    },
+    {
+      "id": "act-mu6j8lov-0st38",
+      "at": "2026-09-19T06:30:00.000Z",
+      "fieldId": "B",
+      "durationMin": 25,
+      "waterL": 465,
+      "mode": "Scheduled",
+      "status": "Scheduled"
+    },
+    {
+      "id": "act-mu6j8gti-5epnj",
+      "at": "2026-09-18T08:30:00.000Z",
+      "fieldId": "A",
+      "durationMin": 20,
+      "waterL": 340,
+      "mode": "Automatic",
+      "status": "Completed"
+    },
+    {
+      "id": "act-mu6j8gti-4y1bm",
+      "at": "2026-09-17T18:15:00.000Z",
+      "fieldId": "B",
+      "durationMin": 15,
+      "waterL": 260,
+      "mode": "Manual",
+      "status": "Completed"
+    },
+    {
+      "id": "act-mu6j8gti-zpn79",
+      "at": "2026-09-15T07:00:00.000Z",
+      "fieldId": "C",
+      "durationMin": 25,
+      "waterL": 420,
+      "mode": "Scheduled",
+      "status": "Completed"
+    }
+  ],
+  "schedules": [
+    {
+      "id": "sch-mu6j8lou-cmcsd",
+      "fieldId": "B",
+      "at": "2026-09-19T06:30:00.000Z",
+      "durationMin": 25,
+      "mode": "Scheduled",
+      "status": "Scheduled",
+      "createdAt": "2026-09-18T05:43:11.310Z"
+    }
+  ],
+  "counters": {
+    "sessionsToday": 6,
+    "waterSavedPercent": 18,
+    "previousWeekLitres": 8750
+  }
+}

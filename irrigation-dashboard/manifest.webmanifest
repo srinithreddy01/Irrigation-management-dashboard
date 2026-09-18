@@ -1,0 +1,18 @@
+{
+  "name": "AquaFarm - Smart Irrigation Management Dashboard",
+  "short_name": "AquaFarm",
+  "description": "Monitor soil moisture, control the irrigation pump, analyse water usage and schedule irrigation from simulated field sensor data.",
+  "start_url": ".",
+  "scope": ".",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#F6F8F6",
+  "theme_color": "#0F4C3A",
+  "lang": "en-IN",
+  "icons": [
+    { "src": "assets/images/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "assets/images/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "assets/images/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "categories": ["productivity", "utilities"]
+}

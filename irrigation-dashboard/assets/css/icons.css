@@ -1,0 +1,7 @@
+/* ============================================================================
+   AquaFarm - icon layer
+   Loads the locally hosted Font Awesome Free icon set. The stylesheet is
+   vendored so the dashboard works completely offline (file:// included).
+   The vendored file resolves its fonts from assets/vendor/fontawesome/webfonts/.
+   ========================================================================== */
+@import url("../vendor/fontawesome/all.min.css");
