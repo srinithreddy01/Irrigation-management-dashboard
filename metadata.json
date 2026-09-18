@@ -1,0 +1,8 @@
+{
+  "name": "AquaFarm | Smart Irrigation Management Dashboard",
+  "description": "AquaFarm is a smart irrigation management dashboard for monitoring soil moisture, temperature, humidity, water tank level and pump status, analysing water usage and scheduling irrigation from simulated field sensor data.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

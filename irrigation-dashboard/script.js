@@ -32,8 +32,55 @@
     schedules: "aquafarm.schedules.v1",
     pump: "aquafarm.pump.v1",
     counters: "aquafarm.counters.v1",
-    prefs: "aquafarm.prefs.v1"
+    prefs: "aquafarm.prefs.v1",
+    user: "aquafarm.user.v1",
+    customUsers: "aquafarm.customUsers.v1"
   };
+
+  var DEMO_ACCOUNTS = [
+    {
+      id: "ravi",
+      name: "Ravi Kumar",
+      role: "Farm Manager",
+      email: "ravi.kumar@aquafarm.io",
+      initials: "RK",
+      badge: "Manager",
+      access: "Full pump operations & system settings",
+      color: "#0F4C3A"
+    },
+    {
+      id: "priya",
+      name: "Priya Sharma",
+      role: "Agronomist & Field Lead",
+      email: "priya.sharma@aquafarm.io",
+      initials: "PS",
+      badge: "Agronomy",
+      access: "Crop schedules & moisture thresholds",
+      color: "#155E75"
+    },
+    {
+      id: "amit",
+      name: "Amit Patel",
+      role: "Irrigation Specialist",
+      email: "amit.patel@aquafarm.io",
+      initials: "AP",
+      badge: "Irrigation",
+      access: "Valve automation & pump telemetry",
+      color: "#854D0E"
+    },
+    {
+      id: "sunita",
+      name: "Sunita Rao",
+      role: "Farm Owner & Supervisor",
+      email: "sunita.rao@aquafarm.io",
+      initials: "SR",
+      badge: "Owner",
+      access: "Farm analytics & water resource budget",
+      color: "#166534"
+    }
+  ];
+
+  var DEFAULT_USER = Object.assign({}, DEMO_ACCOUNTS[0], { signedIn: true });
 
   var DEFAULT_SETTINGS = {
     threshold: 30,
@@ -174,6 +221,8 @@
      4. APPLICATION STATE
      ========================================================================== */
   var state = {
+    user: Object.assign({}, DEFAULT_USER),
+    customUsers: [],
     settings: Object.assign({}, DEFAULT_SETTINGS),
     fields: [
       {
@@ -2197,6 +2246,7 @@
                  moisture: round(field.moisture, 1), band: field.band, sensor: field.sensor };
       }),
       pump: { on: state.pump.on, mode: state.pump.mode, fieldId: state.pump.fieldId },
+      user: state.user,
       alerts: state.alerts,
       activity: state.activity,
       schedules: state.schedules,
@@ -2233,6 +2283,8 @@
 
     Store.clearAll();
     state.settings = Object.assign({}, DEFAULT_SETTINGS);
+    state.user = Object.assign({}, DEFAULT_USER);
+    state.customUsers = [];
     state.alerts = [];
     state.activity = [];
     state.schedules = [];
@@ -2250,6 +2302,230 @@
     renderAll();
     toast("success", "Dashboard reset", "All saved data was cleared and the demonstration data was restored.");
     track("data.reset", {});
+  }
+
+  /* ==========================================================================
+     USER ACCOUNTS & AUTHENTICATION SESSION
+     ========================================================================== */
+  function getGreeting() {
+    var hour = new Date().getHours();
+    if (hour < 12) { return "Good Morning"; }
+    if (hour < 17) { return "Good Afternoon"; }
+    return "Good Evening";
+  }
+
+  function renderUserSession() {
+    var u = state.user;
+    var isSignedIn = u && u.signedIn;
+    var displayName = isSignedIn ? u.name : "Guest (Signed Out)";
+    var displayRole = isSignedIn ? u.role : "Signed Out";
+    var initials = isSignedIn ? (u.initials || (u.name ? u.name.slice(0, 2).toUpperCase() : "OP")) : "--";
+    var color = (isSignedIn && u.color) ? u.color : "var(--gray-500)";
+
+    // 1. Top navigation profile chip
+    var userProfile = $("#userProfile");
+    if (userProfile) {
+      userProfile.setAttribute("aria-label", isSignedIn ? "User menu for " + u.name : "User menu (signed out)");
+    }
+    var avatarEl = $("#userProfileAvatar");
+    if (avatarEl) {
+      if (isSignedIn) {
+        avatarEl.textContent = initials;
+        avatarEl.style.backgroundColor = color;
+        avatarEl.classList.remove("is-signed-out");
+      } else {
+        avatarEl.innerHTML = '<i class="fa-solid fa-user-slash" aria-hidden="true"></i>';
+        avatarEl.style.backgroundColor = "";
+        avatarEl.classList.add("is-signed-out");
+      }
+    }
+    setText("#userProfileName", displayName);
+    setText("#userProfileRole", isSignedIn ? displayRole : "Click to switch or sign in");
+
+    // 2. Dropdown items
+    var dropdownHeader = $("#userProfileDropdownHeader");
+    if (dropdownHeader) {
+      if (isSignedIn) {
+        dropdownHeader.innerHTML = 'Signed in as <strong id="userProfileDropdownName">' + escapeHtml(u.name) + '</strong>';
+      } else {
+        dropdownHeader.innerHTML = 'Signed out &bull; <span class="text-muted">Viewing as Guest</span>';
+      }
+    }
+
+    var signOutBtn = $("#signOutBtn");
+    if (signOutBtn) {
+      signOutBtn.hidden = !isSignedIn;
+    }
+
+    // 3. Hero Greeting
+    var greeting = getGreeting();
+    var greetingEl = $("#greetingText");
+    if (greetingEl) {
+      greetingEl.textContent = isSignedIn ? greeting : "Welcome to AquaFarm";
+    }
+    var heroUserEl = $("#heroUserName");
+    if (heroUserEl) {
+      heroUserEl.textContent = isSignedIn ? (u.name.split(" ")[0] || u.name) : "Guest";
+    }
+
+    // 4. Settings Card
+    var settingsAvatar = $("#settingsSessionAvatar");
+    if (settingsAvatar) {
+      if (isSignedIn) {
+        settingsAvatar.textContent = initials;
+        settingsAvatar.style.backgroundColor = color;
+        settingsAvatar.classList.remove("is-signed-out");
+      } else {
+        settingsAvatar.innerHTML = '<i class="fa-solid fa-user-slash" aria-hidden="true"></i>';
+        settingsAvatar.style.backgroundColor = "";
+        settingsAvatar.classList.add("is-signed-out");
+      }
+    }
+    var settingsStatus = $("#settingsSessionStatus");
+    if (settingsStatus) {
+      settingsStatus.textContent = isSignedIn ? "Active Operator" : "Signed Out (Guest)";
+      if (isSignedIn) {
+        settingsStatus.classList.remove("is-signed-out");
+      } else {
+        settingsStatus.classList.add("is-signed-out");
+      }
+    }
+    setText("#settingsSessionName", displayName);
+    setText("#settingsSessionRole", isSignedIn ? (u.role + " \u2022 " + (u.email || "")) : "Not signed in to any account");
+
+    var settingsSignOutBtn = $("#settingsSignOutBtn");
+    if (settingsSignOutBtn) {
+      settingsSignOutBtn.disabled = !isSignedIn;
+      settingsSignOutBtn.style.opacity = isSignedIn ? "1" : "0.5";
+    }
+
+    // 5. Account Switcher Modal
+    renderAccountModal();
+  }
+
+  function renderAccountModal() {
+    var u = state.user;
+    var isSignedIn = u && u.signedIn;
+    var modalAvatar = $("#modalSessionAvatar");
+    if (modalAvatar) {
+      if (isSignedIn) {
+        modalAvatar.textContent = u.initials || (u.name ? u.name.slice(0, 2).toUpperCase() : "OP");
+        modalAvatar.style.backgroundColor = u.color || "var(--green-700)";
+        modalAvatar.classList.remove("is-signed-out");
+      } else {
+        modalAvatar.innerHTML = '<i class="fa-solid fa-user-slash" aria-hidden="true"></i>';
+        modalAvatar.style.backgroundColor = "";
+        modalAvatar.classList.add("is-signed-out");
+      }
+    }
+    var modalStatus = $("#modalSessionStatus");
+    if (modalStatus) {
+      modalStatus.textContent = isSignedIn ? "Active Session" : "Signed Out (Viewing as Guest)";
+      if (isSignedIn) {
+        modalStatus.classList.remove("is-signed-out");
+      } else {
+        modalStatus.classList.add("is-signed-out");
+      }
+    }
+    setText("#modalSessionName", isSignedIn ? u.name : "Guest Mode");
+    setText("#modalSessionRole", isSignedIn ? (u.role + " \u2022 " + (u.email || "")) : "Select or sign in to a farm profile below to restore your session.");
+
+    var modalSignOut = $("#modalSignOutBtn");
+    if (modalSignOut) {
+      modalSignOut.hidden = !isSignedIn;
+    }
+
+    // Render account cards list
+    var list = $("#accountList");
+    if (!list) { return; }
+
+    var allAccounts = DEMO_ACCOUNTS.concat(state.customUsers || []);
+    list.innerHTML = allAccounts.map(function (acc) {
+      var isActive = isSignedIn && u.id === acc.id;
+      return (
+        '<button type="button" class="account-card ' + (isActive ? "is-active" : "") + '" data-account-id="' + escapeHtml(acc.id) + '">' +
+          '<span class="account-card__avatar" style="background-color: ' + escapeHtml(acc.color || "var(--green-700)") + '" aria-hidden="true">' +
+            escapeHtml(acc.initials || acc.name.slice(0, 2).toUpperCase()) +
+          '</span>' +
+          '<span class="account-card__info">' +
+            '<span class="account-card__name-row">' +
+              '<span class="account-card__name">' + escapeHtml(acc.name) + '</span>' +
+              '<span class="account-card__badge">' + escapeHtml(acc.badge || acc.role) + '</span>' +
+            '</span>' +
+            '<span class="account-card__role">' + escapeHtml(acc.role) + " &bull; " + escapeHtml(acc.email) + '</span>' +
+            '<span class="account-card__access">' + escapeHtml(acc.access || "Farm operator") + '</span>' +
+          '</span>' +
+          '<span class="account-card__action">' +
+            (isActive
+              ? '<span class="status-tag is-tone-success"><span class="status-tag__dot" aria-hidden="true"></span>Active</span>'
+              : '<span class="btn btn--sm btn--ghost">Switch</span>') +
+          '</span>' +
+        '</button>'
+      );
+    }).join("");
+  }
+
+  function signOut() {
+    var previousName = state.user && state.user.name ? state.user.name : "Operator";
+    state.user = Object.assign({}, state.user, { signedIn: false });
+    Store.write(STORAGE_KEYS.user, state.user);
+    renderUserSession();
+    toast("info", "Signed Out", "You have signed out from " + previousName + ". Choose an account below to switch or log back in.");
+
+    // Open the account switcher modal so user can switch accounts easily
+    var modalEl = $("#accountModal");
+    if (modalEl && window.bootstrap && window.bootstrap.Modal) {
+      var modal = window.bootstrap.Modal.getOrCreateInstance(modalEl);
+      modal.show();
+    }
+  }
+
+  function switchAccount(accountId) {
+    var allAccounts = DEMO_ACCOUNTS.concat(state.customUsers || []);
+    var target = allAccounts.filter(function (acc) { return acc.id === accountId; })[0];
+    if (!target) { return; }
+
+    state.user = Object.assign({}, target, { signedIn: true });
+    Store.write(STORAGE_KEYS.user, state.user);
+    renderUserSession();
+
+    toast("success", "Account Switched", "Signed in as " + target.name + " (" + target.role + ").");
+
+    var modalEl = $("#accountModal");
+    if (modalEl && window.bootstrap && window.bootstrap.Modal) {
+      var modal = window.bootstrap.Modal.getInstance(modalEl);
+      if (modal) { modal.hide(); }
+    }
+  }
+
+  function addCustomUser(name, role, email) {
+    var initials = name.trim().split(/\s+/).map(function (w) { return w[0]; }).join("").toUpperCase().slice(0, 2) || "U";
+    var newUser = {
+      id: "usr_" + Date.now().toString(36),
+      name: name.trim(),
+      role: role.trim(),
+      email: email.trim(),
+      initials: initials,
+      badge: "Team",
+      access: "Field monitoring & irrigation operations",
+      color: "#0F4C3A",
+      signedIn: true
+    };
+    if (!Array.isArray(state.customUsers)) { state.customUsers = []; }
+    state.customUsers.push(newUser);
+    Store.write(STORAGE_KEYS.customUsers, state.customUsers);
+
+    state.user = Object.assign({}, newUser);
+    Store.write(STORAGE_KEYS.user, state.user);
+    renderUserSession();
+
+    toast("success", "Signed In", "Welcome, " + newUser.name + "! Switched to your profile.");
+
+    var modalEl = $("#accountModal");
+    if (modalEl && window.bootstrap && window.bootstrap.Modal) {
+      var modal = window.bootstrap.Modal.getInstance(modalEl);
+      if (modal) { modal.hide(); }
+    }
   }
 
   /* ==========================================================================
@@ -2288,6 +2564,15 @@
   }
 
   function restoreStoredState() {
+    var storedUser = Store.read(STORAGE_KEYS.user, null);
+    if (storedUser && typeof storedUser === "object") {
+      state.user = Object.assign({}, DEFAULT_USER, storedUser);
+    }
+    var storedCustomUsers = Store.read(STORAGE_KEYS.customUsers, null);
+    if (Array.isArray(storedCustomUsers)) {
+      state.customUsers = storedCustomUsers;
+    }
+
     var storedSettings = Store.read(STORAGE_KEYS.settings, null);
     if (storedSettings && typeof storedSettings === "object") {
       state.settings = Object.assign({}, DEFAULT_SETTINGS, storedSettings);
@@ -2751,6 +3036,68 @@
       if (button) { button.addEventListener("click", function () { resetDemoData(false); }); }
     });
 
+    ["#signOutBtn", "#settingsSignOutBtn", "#modalSignOutBtn"].forEach(function (selector) {
+      var button = $(selector);
+      if (button) { button.addEventListener("click", signOut); }
+    });
+
+    var accountList = $("#accountList");
+    if (accountList) {
+      accountList.addEventListener("click", function (event) {
+        var card = event.target.closest(".account-card");
+        if (card && card.dataset.accountId) {
+          switchAccount(card.dataset.accountId);
+        }
+      });
+    }
+
+    var toggleCustomUserBtn = $("#toggleCustomUserBtn");
+    var customUserForm = $("#customUserForm");
+    var customUserChevron = $("#customUserChevron");
+    if (toggleCustomUserBtn && customUserForm) {
+      toggleCustomUserBtn.addEventListener("click", function () {
+        var isHidden = customUserForm.hidden;
+        customUserForm.hidden = !isHidden;
+        toggleCustomUserBtn.setAttribute("aria-expanded", String(isHidden));
+        if (customUserChevron) {
+          customUserChevron.className = isHidden ? "fa-solid fa-chevron-up" : "fa-solid fa-chevron-down";
+        }
+        if (isHidden) {
+          var nameInput = $("#customUserName");
+          if (nameInput) { nameInput.focus(); }
+        }
+      });
+    }
+
+    if (customUserForm) {
+      customUserForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+        var nameInput = $("#customUserName");
+        var roleInput = $("#customUserRole");
+        var emailInput = $("#customUserEmail");
+        var name = nameInput ? nameInput.value.trim() : "";
+        var role = roleInput ? roleInput.value.trim() : "Farm Manager";
+        var email = emailInput ? emailInput.value.trim() : "";
+
+        if (!name) {
+          if (nameInput) { nameInput.focus(); }
+          toast("warning", "Name required", "Please enter your name to sign in.");
+          return;
+        }
+        if (!email) {
+          if (emailInput) { emailInput.focus(); }
+          toast("warning", "Email required", "Please enter a valid email address.");
+          return;
+        }
+
+        addCustomUser(name, role, email);
+        customUserForm.reset();
+        customUserForm.hidden = true;
+        if (toggleCustomUserBtn) { toggleCustomUserBtn.setAttribute("aria-expanded", "false"); }
+        if (customUserChevron) { customUserChevron.className = "fa-solid fa-chevron-down"; }
+      });
+    }
+
     var cookiePrefs = $("#cookiePrefsToggle");
     if (cookiePrefs) {
       cookiePrefs.addEventListener("change", function () {
@@ -2797,6 +3144,7 @@
     populateSelects();
     applyUnitLabels();
     loadSettingsIntoForm();
+    renderUserSession();
     renderKpis();
     renderTank();
     renderPump();

@@ -678,6 +678,9 @@ main { display: block; }
 .profile-menu .dropdown-header { font-size: var(--fs-xs); color: var(--text-muted); font-weight: var(--fw-medium); }
 .panel-dropdown .dropdown-item { padding: 0.625rem 1rem; white-space: normal; }
 .panel-dropdown .dropdown-item:hover { background: var(--green-050); }
+.profile-menu .dropdown-item.text-danger { color: var(--danger); }
+.profile-menu .dropdown-item.text-danger i { color: var(--danger); }
+.profile-menu .dropdown-item.text-danger:hover { background: var(--danger-soft); color: var(--danger); }
 
 .mini-alert {
   display: flex;
@@ -1568,6 +1571,162 @@ input[type="time"].is-invalid { border-color: var(--danger); background-color: #
 .field-detail__chart { margin-top: var(--sp-5); }
 .field-detail__chart canvas { max-height: 220px; }
 .field-detail__note { margin-top: var(--sp-4); font-size: var(--fs-xs); color: var(--text-faint); }
+
+/* ============================== ACCOUNT SWITCHER & SESSION ============================== */
+.account-session-card {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-4);
+  border-radius: var(--r-md);
+  background: var(--surface-sunken);
+  border: 1px solid var(--border);
+}
+.account-session-card__avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--green-700);
+  color: var(--white);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-h4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background-color var(--transition-fast);
+}
+.account-session-card__avatar.is-signed-out {
+  background: var(--gray-400);
+  color: var(--white);
+}
+.account-session-card__info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.account-session-card__status {
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-bold);
+  color: var(--green-700);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.account-session-card__status.is-signed-out {
+  color: var(--text-faint);
+}
+.account-session-card__name {
+  font-size: var(--fs-h3);
+  color: var(--text-strong);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.account-session-card__role {
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.account-section-heading {
+  font-size: var(--fs-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: var(--fw-bold);
+  color: var(--text-faint);
+  margin-block: var(--sp-4) var(--sp-2);
+}
+.account-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+.account-card {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: 0.75rem var(--sp-4);
+  border-radius: var(--r-md);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  text-align: left;
+  width: 100%;
+}
+.account-card:hover {
+  border-color: var(--green-400);
+  background: var(--green-050);
+}
+.account-card.is-active {
+  border-color: var(--green-600);
+  background: var(--green-050);
+  box-shadow: 0 0 0 1px var(--green-600);
+}
+.account-card__avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  color: var(--white);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.account-card__info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.account-card__name-row {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  flex-wrap: wrap;
+}
+.account-card__name {
+  font-size: var(--fs-body);
+  font-weight: var(--fw-semibold);
+  color: var(--text-strong);
+}
+.account-card__badge {
+  font-size: 0.6875rem;
+  padding: 0.1rem 0.5rem;
+  border-radius: var(--r-pill);
+  background: var(--gray-100);
+  color: var(--text-muted);
+  font-weight: var(--fw-medium);
+}
+.account-card__role {
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+}
+.account-card__access {
+  font-size: 0.6875rem;
+  color: var(--text-faint);
+}
+.account-card__action {
+  flex-shrink: 0;
+}
+.account-custom-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.625rem 1rem;
+}
+.custom-user-form {
+  padding: var(--sp-4);
+  border-radius: var(--r-md);
+  background: var(--surface-sunken);
+  border: 1px solid var(--border);
+}
 
 .noscript-banner {
   position: fixed;

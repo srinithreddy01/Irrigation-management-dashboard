@@ -115,18 +115,21 @@
         </div>
 
         <div class="profile" id="userProfile" data-bs-toggle="dropdown" role="button" tabindex="0" aria-haspopup="true" aria-expanded="false" aria-label="User menu for Ravi Kumar">
-          <span class="profile__avatar" aria-hidden="true">RK</span>
-          <span class="profile__meta">
-            <span class="profile__name">Ravi Kumar</span>
-            <span class="profile__role">Farm Manager</span>
+          <span class="profile__avatar" id="userProfileAvatar" aria-hidden="true">RK</span>
+          <span class="profile__meta" id="userProfileMeta">
+            <span class="profile__name" id="userProfileName">Ravi Kumar</span>
+            <span class="profile__role" id="userProfileRole">Farm Manager</span>
           </span>
           <i class="fa-solid fa-chevron-down profile__caret" aria-hidden="true"></i>
         </div>
         <ul class="dropdown-menu dropdown-menu-end panel-dropdown profile-menu" aria-labelledby="userProfile">
-          <li><span class="dropdown-header">Signed in as <strong>Ravi Kumar</strong></span></li>
+          <li><span class="dropdown-header" id="userProfileDropdownHeader">Signed in as <strong id="userProfileDropdownName">Ravi Kumar</strong></span></li>
           <li><a class="dropdown-item" href="#settings"><i class="fa-solid fa-sliders" aria-hidden="true"></i> Irrigation settings</a></li>
           <li><a class="dropdown-item" href="#analytics"><i class="fa-solid fa-chart-line" aria-hidden="true"></i> Water usage analytics</a></li>
           <li><a class="dropdown-item" href="#alerts"><i class="fa-solid fa-bell" aria-hidden="true"></i> Alerts &amp; notifications</a></li>
+          <li><hr class="dropdown-divider"></li>
+          <li><button class="dropdown-item" type="button" id="switchAccountBtn" data-bs-toggle="modal" data-bs-target="#accountModal"><i class="fa-solid fa-users" aria-hidden="true"></i> Switch account</button></li>
+          <li><button class="dropdown-item text-danger" type="button" id="signOutBtn"><i class="fa-solid fa-arrow-right-from-bracket" aria-hidden="true"></i> Sign out</button></li>
           <li><hr class="dropdown-divider"></li>
           <li><button class="dropdown-item" type="button" id="exportDataBtn"><i class="fa-solid fa-file-arrow-down" aria-hidden="true"></i> Export demo data (JSON)</button></li>
           <li><button class="dropdown-item" type="button" id="resetDemoBtn"><i class="fa-solid fa-rotate-left" aria-hidden="true"></i> Reset dashboard data</button></li>
@@ -162,7 +165,7 @@
               </span>
               <span class="pill pill--ghost"><i class="fa-solid fa-tower-broadcast" aria-hidden="true"></i> Demonstration data</span>
             </div>
-            <h1 class="hero__title" id="overviewHeading"><span id="greetingText">Good Morning</span>, Ravi</h1>
+            <h1 class="hero__title" id="overviewHeading"><span id="greetingText">Good Morning</span>, <span id="heroUserName">Ravi</span></h1>
             <p class="hero__subtitle">Here&rsquo;s the current status of your farm.</p>
             <div class="hero__meta">
               <p class="hero__updated">
@@ -929,6 +932,33 @@
 
           <div class="col-12 col-xl-4">
             <div class="stack">
+              <article class="card" aria-labelledby="accountHeading">
+                <div class="card-head">
+                  <div>
+                    <h3 class="card-title" id="accountHeading">Account &amp; Operator</h3>
+                    <p class="card-subtitle">Active operator profile and session management</p>
+                  </div>
+                </div>
+                <div class="account-session-card mb-3" id="settingsSessionCard">
+                  <div class="account-session-card__avatar" id="settingsSessionAvatar">RK</div>
+                  <div class="account-session-card__info">
+                    <span class="account-session-card__status" id="settingsSessionStatus">Active Operator</span>
+                    <strong class="account-session-card__name" id="settingsSessionName">Ravi Kumar</strong>
+                    <span class="account-session-card__role" id="settingsSessionRole">Farm Manager &bull; ravi.kumar@aquafarm.io</span>
+                  </div>
+                </div>
+                <div class="form-actions">
+                  <button class="btn btn--primary btn--sm" type="button" id="settingsSwitchAccountBtn" data-bs-toggle="modal" data-bs-target="#accountModal">
+                    <i class="fa-solid fa-users" aria-hidden="true"></i>
+                    <span>Switch Account</span>
+                  </button>
+                  <button class="btn btn--danger btn--sm" type="button" id="settingsSignOutBtn">
+                    <i class="fa-solid fa-arrow-right-from-bracket" aria-hidden="true"></i>
+                    <span>Sign Out</span>
+                  </button>
+                </div>
+              </article>
+
               <article class="card" aria-labelledby="simulationHeading">
                 <div class="card-head">
                   <div>
@@ -1247,6 +1277,79 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn--primary" data-bs-dismiss="modal">Done</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================= ACCOUNT SWITCHER & SIGN IN MODAL ============================= -->
+  <div class="modal fade" id="accountModal" tabindex="-1" aria-labelledby="accountModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div>
+            <h2 class="modal-title" id="accountModalTitle">Switch Account</h2>
+            <p class="modal-subtitle" id="accountModalSubtitle">Switch between farm team profiles or sign in as a new user</p>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="account-session-card mb-3" id="modalSessionCard">
+            <div class="account-session-card__avatar" id="modalSessionAvatar">RK</div>
+            <div class="account-session-card__info">
+              <span class="account-session-card__status" id="modalSessionStatus">Active Session</span>
+              <strong class="account-session-card__name" id="modalSessionName">Ravi Kumar</strong>
+              <span class="account-session-card__role" id="modalSessionRole">Farm Manager &bull; ravi.kumar@aquafarm.io</span>
+            </div>
+            <button type="button" class="btn btn--danger btn--sm" id="modalSignOutBtn">
+              <i class="fa-solid fa-arrow-right-from-bracket" aria-hidden="true"></i>
+              <span>Sign Out</span>
+            </button>
+          </div>
+
+          <h3 class="account-section-heading">Select Farm Account</h3>
+          <div class="account-list" id="accountList" role="radiogroup" aria-label="Available farm team accounts">
+            <!-- Rendered by script.js -->
+          </div>
+
+          <div class="account-custom-section mt-4">
+            <button type="button" class="btn btn--ghost w-100 account-custom-toggle" id="toggleCustomUserBtn" aria-expanded="false" aria-controls="customUserForm">
+              <span class="d-inline-flex align-items-center gap-2">
+                <i class="fa-solid fa-user-plus" aria-hidden="true"></i>
+                <span>Sign in as a different user</span>
+              </span>
+              <i class="fa-solid fa-chevron-down" id="customUserChevron" aria-hidden="true"></i>
+            </button>
+            <form class="custom-user-form mt-3" id="customUserForm" hidden novalidate>
+              <div class="mb-3">
+                <label class="form-label" for="customUserName">Full Name</label>
+                <input type="text" class="form-control" id="customUserName" placeholder="e.g. Vikram Singh" required>
+              </div>
+              <div class="row g-2 mb-3">
+                <div class="col-sm-6">
+                  <label class="form-label" for="customUserRole">Farm Role</label>
+                  <select class="form-select" id="customUserRole">
+                    <option value="Agronomist">Agronomist</option>
+                    <option value="Farm Manager">Farm Manager</option>
+                    <option value="Field Technician">Field Technician</option>
+                    <option value="Irrigation Specialist">Irrigation Specialist</option>
+                    <option value="Farm Owner &amp; Supervisor">Farm Owner &amp; Supervisor</option>
+                  </select>
+                </div>
+                <div class="col-sm-6">
+                  <label class="form-label" for="customUserEmail">Email Address</label>
+                  <input type="email" class="form-control" id="customUserEmail" placeholder="e.g. vikram@aquafarm.io" required>
+                </div>
+              </div>
+              <button type="submit" class="btn btn--primary w-100" id="customUserSubmitBtn">
+                <i class="fa-solid fa-right-to-bracket" aria-hidden="true"></i>
+                <span>Sign In &amp; Switch</span>
+              </button>
+            </form>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn--ghost" data-bs-dismiss="modal">Close</button>
         </div>
       </div>
     </div>

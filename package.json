@@ -1,16 +1,22 @@
 {
-  "name": "user",
+  "name": "aquafarm-irrigation-dashboard",
   "version": "1.0.0",
-  "main": "index.js",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "node server.js",
+    "build": "mkdir -p dist && cp -r irrigation-dashboard/* dist/",
+    "start": "node server.js",
+    "lint": "node -c server.js"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "irrigation",
+    "dashboard",
+    "agriculture"
+  ],
+  "author": "AquaFarm",
   "license": "ISC",
-  "description": "",
+  "description": "AquaFarm Smart Irrigation Management Dashboard",
   "dependencies": {
-    "axe-core": "^4.13.0",
-    "puppeteer": "^24.43.1"
+    "express": "^5.2.1"
   }
 }
